@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>规则之间 · 垂直切片（N0–N1）</title>
+<style>
+  :root { --ink:#1a1712; --paper:#f2ecdd; --paper-dark:#e6ddc8; --ui:#d8d2c4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; overflow:hidden; background:#0c0e14; font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+  canvas { display:block; }
+
+  /* ---------- 开始界面 ---------- */
+  #start { position:fixed; inset:0; background:#0c0e14; color:var(--ui); display:flex;
+    flex-direction:column; align-items:center; justify-content:center; z-index:50; cursor:pointer; }
+  #start h1 { font-size:44px; letter-spacing:14px; font-weight:300; margin-bottom:8px; }
+  #start .sub { font-size:14px; letter-spacing:4px; opacity:.6; margin-bottom:48px; }
+  #start .keys { font-size:14px; line-height:2.2; opacity:.85; text-align:center; }
+  #start .keys b { display:inline-block; min-width:86px; color:#fff; font-weight:500; }
+  #start .go { margin-top:48px; font-size:15px; letter-spacing:3px; border:1px solid #5a5648;
+    padding:12px 42px; border-radius:2px; animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.45} 50%{opacity:1} }
+
+  /* ---------- HUD ---------- */
+  #hud { position:fixed; inset:0; pointer-events:none; z-index:10; display:none; }
+  #clock { position:absolute; top:22px; left:26px; font-size:26px; color:#e8e2d2;
+    letter-spacing:3px; text-shadow:0 1px 6px #000; font-weight:200; }
+  #clock small { display:block; font-size:11px; letter-spacing:2px; opacity:.55; margin-top:2px; }
+  #objective { position:absolute; top:86px; left:26px; max-width:380px; font-size:14px;
+    color:#cfc9ba; line-height:1.7; text-shadow:0 1px 4px #000; }
+  #objective::before { content:"◈ "; color:#b89a5e; }
+  #pollution { position:absolute; top:22px; right:26px; font-size:12px; color:#8a8577;
+    letter-spacing:2px; text-shadow:0 1px 4px #000; }
+  #crosshair { position:absolute; left:50%; top:50%; width:6px; height:6px; margin:-3px;
+    border-radius:50%; background:rgba(230,225,210,.55); box-shadow:0 0 4px rgba(0,0,0,.8); }
+  #prompt { position:absolute; left:50%; top:56%; transform:translateX(-50%); font-size:15px;
+    color:#f0ead8; text-shadow:0 1px 5px #000; letter-spacing:1px; }
+  #prompt b { border:1px solid #b8b0a0; border-radius:3px; padding:0 7px; margin-right:8px;
+    font-weight:400; font-size:13px; }
+  #hint { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); font-size:12px;
+    color:rgba(200,195,180,.5); letter-spacing:1px; }
+
+  /* ---------- 纸张弹层 ---------- */
+  #note { position:fixed; inset:0; z-index:30; display:none; align-items:center; justify-content:center;
+    background:rgba(5,6,10,.55); }
+  #note .paper { width:min(560px, 88vw); max-height:78vh; overflow-y:auto; background:var(--paper);
+    color:var(--ink); padding:38px 44px 30px; border-radius:2px;
+    box-shadow:0 18px 60px rgba(0,0,0,.75); transform:rotate(-.4deg); position:relative; }
+  #note .paper::before { content:""; position:absolute; top:0; left:0; right:0; height:5px;
+    background:var(--paper-dark); }
+  #note h3 { font-size:15px; letter-spacing:3px; margin-bottom:18px; color:#6b5d40; font-weight:500; }
+  #note .body { font-size:15.5px; line-height:2.05; white-space:pre-wrap; }
+  #note .body.mirror { white-space:normal; }
+  #note .body .mgrid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+  #note .body .mcol { padding:16px 14px; border-radius:3px; font-size:13.5px; line-height:1.9; }
+  #note .body .mcol.old { background:#2b2418; color:#e8d9b0; border:1px solid #4a3d24; }
+  #note .body .mcol.now { background:#e9e2d0; color:#3a352a; border:1px solid #c9bd9f; }
+  #note .body .mcol b { display:block; font-size:11px; letter-spacing:3px; margin-bottom:10px; opacity:.65; }
+  #note .body .mcol svg { display:block; width:100%; height:96px; margin-bottom:10px; }
+
+  /* ---------- 启动按钮 ---------- */
+  #start .btnrow { display:flex; gap:18px; margin-top:40px; }
+  #start .btnrow button { font:inherit; font-size:15px; letter-spacing:3px; color:var(--ui);
+    background:none; border:1px solid #5a5648; padding:12px 40px; cursor:pointer; border-radius:2px; }
+  #start .btnrow button:hover { background:rgba(255,255,255,.07); }
+
+  /* ---------- 死亡卡 ---------- */
+  #death { position:fixed; inset:0; z-index:45; display:none; align-items:center; justify-content:center;
+    flex-direction:column; background:#000; color:#b8b2a2; text-align:center; }
+  #death h2 { font-size:22px; letter-spacing:6px; font-weight:300; margin-bottom:24px; }
+  #death p { font-size:14px; line-height:2; opacity:.7; margin-bottom:36px; }
+  #note .choices { margin-top:26px; display:flex; flex-direction:column; gap:10px; }
+  #note .choices button { font:inherit; font-size:14.5px; text-align:left; padding:10px 16px;
+    background:var(--paper-dark); border:1px solid #c9bd9f; border-radius:2px; cursor:pointer;
+    color:var(--ink); letter-spacing:1px; transition:background .15s; }
+  #note .choices button:hover { background:#d9cdb0; }
+  #note .choices button::before { content:attr(data-k) " · "; color:#8a744c; margin-right:6px; }
+  #note .close { margin-top:22px; font-size:12px; color:#9a8d6f; letter-spacing:1px; }
+
+  /* ---------- 笔记面板 ---------- */
+  #notes { position:fixed; inset:0; z-index:28; display:none; background:rgba(5,6,10,.72);
+    color:var(--ui); overflow-y:auto; padding:60px 0; }
+  #notes .inner { width:min(640px,90vw); margin:0 auto; }
+  #notes h2 { font-size:16px; letter-spacing:4px; margin-bottom:24px; color:#b89a5e; font-weight:400; }
+  #notes .item { background:rgba(242,236,221,.08); border-left:2px solid #6b5d40;
+    padding:14px 20px; margin-bottom:12px; font-size:14px; line-height:1.9; }
+  #notes .item i { display:block; font-style:normal; font-size:11px; color:#8a8474;
+    letter-spacing:2px; margin-bottom:6px; }
+  #notes .empty { opacity:.5; font-size:14px; letter-spacing:2px; }
+  #notes .tip { text-align:center; margin-top:28px; font-size:12px; opacity:.45; letter-spacing:2px; }
+
+  /* ---------- 淡入淡出 ---------- */
+  #fade { position:fixed; inset:0; background:#000; opacity:0; pointer-events:none;
+    transition:opacity 1.8s ease; z-index:40; }
+
+  /* ---------- 结束卡 ---------- */
+  #end { position:fixed; inset:0; z-index:60; display:none; flex-direction:column; align-items:center;
+    justify-content:center; background:rgba(8,9,14,.92); color:var(--ui); text-align:center; }
+  #end h2 { font-size:30px; letter-spacing:8px; font-weight:300; margin-bottom:20px; }
+  #end p { font-size:14px; line-height:2.2; opacity:.75; max-width:520px; }
+  #end button { margin-top:40px; font:inherit; font-size:14px; letter-spacing:3px; color:var(--ui);
+    background:none; border:1px solid #5a5648; padding:11px 38px; cursor:pointer; border-radius:2px; }
+  #end button:hover { background:rgba(255,255,255,.06); }
+</style>
+</head>
+<body>
+<div id="start">
+  <h1>规则之间</h1>
+  <div class="sub">垂直切片 · 第一夜 N0–N1 · 灰盒</div>
+  <div class="keys">
+    <div><b>鼠标</b>环顾（点击画面锁定）</div>
+    <div><b>W A S D</b>移动</div>
+    <div><b>E</b>观察 / 交互</div>
+    <div><b>Tab</b>离线笔记</div>
+    <div><b>Esc</b>释放鼠标</div>
+  </div>
+  <div class="go">点 击 开 始</div>
+</div>
+
+<div id="hud">
+  <div id="clock">17:40<small>黄昏 · 十月二十一日</small></div>
+  <div id="objective"></div>
+  <div id="pollution">污染 0</div>
+  <div id="crosshair"></div>
+  <div id="prompt"></div>
+  <div id="hint">Tab 笔记 · Esc 释放鼠标</div>
+</div>
+
+<div id="note"><div class="paper">
+  <h3 id="note-title"></h3>
+  <div class="body" id="note-body"></div>
+  <div class="choices" id="note-choices"></div>
+  <div class="close" id="note-close">E · 合上</div>
+</div></div>
+
+<div id="notes"><div class="inner">
+  <h2>离线笔记</h2>
+  <div id="notes-list"></div>
+  <div class="tip">Tab · 收起</div>
+</div></div>
+
+<div id="fade"></div>
+
+<div id="death"><h2>你失去了返回的位置</h2><p id="death-hint"></p></div>
+
+<div id="end">
+  <h2>切片结束</h2>
+  <p id="end-text"></p>
+  <button onclick="location.reload()">再 来 一 次</button>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "./lib/three.module.js" } }
+</script>
+<script type="module" src="./src/game.js"></script>
+</body>
+</html>

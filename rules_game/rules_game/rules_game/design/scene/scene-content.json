@@ -1,0 +1,826 @@
+{
+  "version": "1.0",
+  "scope": "第一夜场景内容；布局与摆放以geometry和逐场景规格核对",
+  "scenes": [
+    {
+      "id": "F1",
+      "asset_id": "ASSET-069",
+      "name": "玄关",
+      "events": "A01/A10/A20/A47/A49",
+      "visual": "偏置的小门厅，浅灰水磨石与深木门套，现代电子锁和旧门框并置。向客厅的视线清楚，地面接缝是第一眼重点。",
+      "must_read": "正门两侧连续砖缝；门边R2抽屉；转去S与F8的路线不可被柜体挡住。",
+      "states": "M：干净门垫与电子锁；W：旧插销与花砖；G：仅门框和门外地面错接。",
+      "props": [
+        {
+          "kit": "entry_console",
+          "size": [
+            0.85,
+            0.32,
+            0.9
+          ],
+          "placement": "wall",
+          "dynamic": true
+        },
+        {
+          "kit": "door_mat",
+          "size": [
+            0.85,
+            0.55,
+            0.012
+          ],
+          "placement": "floor",
+          "dynamic": false
+        }
+      ],
+      "camera": "从院门内侧看客厅方向；补一格门框/砖缝近景。"
+    },
+    {
+      "id": "F2",
+      "asset_id": "ASSET-070",
+      "name": "客厅",
+      "events": "A02/A11/A19/A42–A48",
+      "visual": "温和的灰米色墙、保养过的木地板、两人布沙发和小茶几。留出停留、看纸和回望玄关的位置；舒适但不做豪华酒店。",
+      "must_read": "入住册D0在桌面；台灯朝F3窗线可形成指定漏光；沙发等待点、F1入口必须一眼可辨。",
+      "states": "M：布沙发与现代册页；W：局部旧布罩、旧灯与纸张替换，保留同一沙发体块；G不改变客厅结构。",
+      "props": [
+        {
+          "kit": "sofa",
+          "size": [
+            1.8,
+            0.8,
+            0.85
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "coffee_table",
+          "size": [
+            0.85,
+            0.5,
+            0.42
+          ],
+          "placement": "center",
+          "dynamic": false
+        },
+        {
+          "kit": "lamp_table",
+          "size": [
+            0.45,
+            0.4,
+            0.65
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从玄关一侧看沙发、册页和餐厅门；补灯具近景。"
+    },
+    {
+      "id": "F3",
+      "asset_id": "ASSET-071",
+      "name": "餐厅",
+      "events": "A03/A14/A43/A44",
+      "visual": "四人餐桌、小餐边柜、深木窗与双层帘，木地板上保留杯垫轻微错位。餐桌不填满房间，围桌可顺畅绕行。",
+      "must_read": "杯子与杯垫；窗帘下摆左/右漏缝和右侧搭扣；餐厅窗线必须接到室外而非内墙。",
+      "states": "M：日常洁净餐具；W：四人桌只留一份用过餐具、完整遮光布和旧灯影；同镜头对照。",
+      "props": [
+        {
+          "kit": "dining_set",
+          "size": [
+            2.2,
+            1.7,
+            0.78
+          ],
+          "placement": "center",
+          "dynamic": false
+        },
+        {
+          "kit": "sideboard",
+          "size": [
+            1,
+            0.35,
+            0.9
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从客厅入口看餐桌与窗帘；补帘缝/搭扣近景。"
+    },
+    {
+      "id": "F4",
+      "asset_id": "ASSET-072",
+      "name": "书房",
+      "events": "A15/A36/H4/V1",
+      "visual": "现代写字桌放在侧面，原旧柜位置刻意留空；墙面有一块浅矩形，地板有两处清楚的柜脚压痕。几本翻修与经营用册页。",
+      "must_read": "V1固定观察位；两种实体印痕不能被新家具/地毯盖住；D6整理页可近看。",
+      "states": "M：现代书桌与旧柜缺席；W仅镜中旧景显示原柜；不把整间变成古董库。",
+      "props": [
+        {
+          "kit": "writing_desk",
+          "size": [
+            1.2,
+            0.55,
+            0.76
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "chair",
+          "size": [
+            0.48,
+            0.48,
+            0.85
+          ],
+          "placement": "center",
+          "dynamic": false
+        },
+        {
+          "kit": "cabinet_ghost",
+          "size": [
+            1.4,
+            0.45,
+            1.85
+          ],
+          "placement": "evidence",
+          "dynamic": true
+        }
+      ],
+      "camera": "从门口看空柜位和写字桌；补两处痕迹与镜中旧柜配对。"
+    },
+    {
+      "id": "F5",
+      "asset_id": "ASSET-073",
+      "name": "厨房",
+      "events": "A09/A14/A18/H1",
+      "visual": "窄型家用操作台，白灰小瓷砖，深灰下柜和保留深木窗；现代热水控制器只在M出现。通后院的门像日常后门。",
+      "must_read": "窗帘内衬D1与旧钉孔；窗外钉位能从O2复查；厨房后门与旁边通F6的动线清楚。",
+      "states": "M为本夜主要可走状态；旧遮光只在窗框痕迹，第一夜不制作整套W厨房。",
+      "props": [
+        {
+          "kit": "kitchen_run",
+          "size": [
+            2.1,
+            0.6,
+            0.9
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "prep_unit",
+          "size": [
+            0.9,
+            0.5,
+            0.9
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从餐厅门看操作台、窗与后门；补内衬钉孔近景。"
+    },
+    {
+      "id": "F6",
+      "asset_id": "ASSET-074",
+      "name": "食品储藏小间",
+      "events": "A14取I1",
+      "visual": "小储藏位，木架上少量无品牌干粮罐和清洁用品，门边单独应急架放手电。人物仍能转身，不做满屋纸箱。",
+      "must_read": "I1在门边1.1–1.3m高度；其余物品背景化，不误导成可合成资源。",
+      "states": "仅M；不额外设计W/G图。",
+      "props": [
+        {
+          "kit": "pantry_shelf",
+          "size": [
+            0.9,
+            0.35,
+            1.75
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "门外正向略偏角看一面架子和取手电位置。"
+    },
+    {
+      "id": "F7",
+      "asset_id": "ASSET-075",
+      "name": "公共卫生间",
+      "events": "A03可选基线",
+      "visual": "整洁小卫生间，半高灰白方砖、简洁坐便器和小洗手盆；上方有维修过的漆边，不渲染污物。",
+      "must_read": "门扇打开不碰洁具；洗手盆和厕所的尺寸像真实日常设施；不放镜子谜题。",
+      "states": "仅M，保留之后声音作为管路来源的外观，不增加互动。",
+      "props": [
+        {
+          "kit": "toilet",
+          "size": [
+            0.4,
+            0.68,
+            0.78
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "small_sink",
+          "size": [
+            0.48,
+            0.4,
+            0.85
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从门洞看洁具布置，正常曝光。"
+    },
+    {
+      "id": "F8",
+      "asset_id": "ASSET-076",
+      "name": "服务短廊",
+      "events": "A15/A16",
+      "visual": "窄而可通行的服务过渡带，较朴素的墙漆、明装短线管，电箱与透明应急盒在同一墙面，周围保留站人检修空地。",
+      "must_read": "I2盒与单一电箱盖/开关；F1/F4/F7/F9连接均要留门前净空；不得用大柜占通路。",
+      "states": "仅M；N7边界用门槛状态处理，不重做全廊。",
+      "props": [
+        {
+          "kit": "breaker_box",
+          "size": [
+            0.55,
+            0.16,
+            0.7
+          ],
+          "placement": "mounted",
+          "dynamic": true
+        },
+        {
+          "kit": "key_box",
+          "size": [
+            0.22,
+            0.1,
+            0.28
+          ],
+          "placement": "mounted",
+          "dynamic": true
+        }
+      ],
+      "camera": "沿短廊看电箱，补钥匙盒和箱盖近景。"
+    },
+    {
+      "id": "F9",
+      "asset_id": "ASSET-077",
+      "name": "布草洗衣间",
+      "events": "A17/A35及外圈回程",
+      "visual": "一组洗衣机和叠放干净布草的窄架，折叠台靠墙。服务门与院门之间不摆物，地面耐用浅灰砖。",
+      "must_read": "通O5内侧插销，通F10门，玩家背着视角经过也能认出机身与白布草两个体块。",
+      "states": "M；不制作复杂洗衣机动画或W机器变体。",
+      "props": [
+        {
+          "kit": "washer",
+          "size": [
+            0.6,
+            0.65,
+            0.85
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "linen_rack",
+          "size": [
+            0.85,
+            0.4,
+            1.7
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "fold_table",
+          "size": [
+            0.8,
+            0.45,
+            0.9
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从服务廊门看布草与院门，结构优先。"
+    },
+    {
+      "id": "F10",
+      "asset_id": "ASSET-078",
+      "name": "值班室",
+      "events": "A35/D7/I3",
+      "visual": "由旧看管人小房改成值班室；一张窄桌、一把椅子、小文件架，折叠床靠墙收起而非占据中间。",
+      "must_read": "林远录音机和外圈图在桌上，播放指示/纸张近看清晰；这里不再放钥匙盒。",
+      "states": "M；旧身份靠保留挂钩和小窗表示，不加第二套卧室。",
+      "props": [
+        {
+          "kit": "duty_desk",
+          "size": [
+            1.05,
+            0.5,
+            0.75
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "chair",
+          "size": [
+            0.48,
+            0.48,
+            0.85
+          ],
+          "placement": "center",
+          "dynamic": false
+        },
+        {
+          "kit": "folded_cot",
+          "size": [
+            0.75,
+            0.3,
+            1.75
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "门内视角看桌面录音机；补设备与地图近景。"
+    },
+    {
+      "id": "S",
+      "asset_id": "ASSET-079",
+      "name": "主楼梯与镜子暗格",
+      "events": "A04/H3/H6",
+      "visual": "单一折返木楼梯，转角厚新柱、细木扶手，扶手手触处更亮。下方换鞋凳有两挡抽屉，对面完整补漆墙隐藏历史门。",
+      "must_read": "上下楼梯落点必须对齐；镜子暗格可蹲/近看；历史门须有2.05m以上净高，不在低斜梯底挤出门洞。",
+      "states": "M：完整补缝墙与凳子；W：仅历史门站立区旧砖/灯影；G：门槛未对齐。",
+      "props": [
+        {
+          "kit": "drawer_bench",
+          "size": [
+            1.05,
+            0.38,
+            0.47
+          ],
+          "placement": "wall",
+          "dynamic": true
+        }
+      ],
+      "camera": "从玄关看折返梯与凳子；补双挡抽屉、镜托和历史门墙三处细节。"
+    },
+    {
+      "id": "U1",
+      "asset_id": "ASSET-080",
+      "name": "二楼短廊",
+      "events": "A25/A30–A34",
+      "visual": "住宅尺度的短分配廊，深木房门、简单纸质房号、窄长地毯禁用以免遮地板锚点；外墙端有可辨院子方向的窗。",
+      "must_read": "二号门牌与院窗为双锚点；正常到S与绕行U5的关系不能靠鱼眼透视夸大；G重复门仅局部。",
+      "states": "M：普通短廊；G：同构件复制一块门牌/门框与错误窗向，保存退回电话厅的可见门。",
+      "props": [
+        {
+          "kit": "wall_print",
+          "size": [
+            0.45,
+            0.03,
+            0.6
+          ],
+          "placement": "mounted",
+          "dynamic": false
+        }
+      ],
+      "camera": "正常短廊轴向视图；补同镜头G局部错位对照。"
+    },
+    {
+      "id": "U2",
+      "asset_id": "ASSET-081",
+      "name": "一号玩家客房",
+      "events": "A04/A06/A51",
+      "visual": "干净的大单人客房，浅灰床品，旧木衣柜与翻新床架，行李凳和普通充电插座。南窗看向前院，清晨可与离开时的院景对应。",
+      "must_read": "床头灯、行李放置处、可看的窗；去浴室和回楼梯短路可读。",
+      "states": "M与真实清晨同骨架，只换自然光；无独有战时资产。",
+      "props": [
+        {
+          "kit": "bed_single",
+          "size": [
+            1.2,
+            2,
+            0.55
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "nightstand",
+          "size": [
+            0.4,
+            0.38,
+            0.52
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "wardrobe",
+          "size": [
+            0.85,
+            0.5,
+            1.95
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "luggage_bench",
+          "size": [
+            0.7,
+            0.4,
+            0.45
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "门内看床与窗，床品材质可读。"
+    },
+    {
+      "id": "U3",
+      "asset_id": "ASSET-082",
+      "name": "二号早期住客客房",
+      "events": "H2/D2/D3",
+      "visual": "同一民宿客房套件，保留一张旧写字桌。较旧纸张收在桌面夹册与抽屉，门边旧路线铅笔线只局部可见；小旧旅行包靠桌。",
+      "must_read": "窗外O2方位可与图比较；桌上三稿线路、杯底干痕和未带走的旧包表现人的失序，不能变成凶案现场。",
+      "states": "M为可查旧物的现状；只需局部显影贴花，不制作住客人形。",
+      "props": [
+        {
+          "kit": "bed_single",
+          "size": [
+            1.2,
+            2,
+            0.55
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "writing_desk",
+          "size": [
+            1.1,
+            0.5,
+            0.76
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "travel_bag",
+          "size": [
+            0.5,
+            0.28,
+            0.38
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从门看桌、窗和保留空地；补记录/杯痕/旧包近景。"
+    },
+    {
+      "id": "U4",
+      "asset_id": "ASSET-083",
+      "name": "三号备用客房",
+      "events": "N2起可选",
+      "visual": "另一间小客房，床品折好、床头空着，少量经营整理痕迹证明这是民宿而非两人住宅。使用同一床柜套件。",
+      "must_read": "只有一般查看，无关键线索，无多余锁/镜子/柜中密码；可以快速认清后返回。",
+      "states": "仅M。",
+      "props": [
+        {
+          "kit": "bed_single",
+          "size": [
+            1.2,
+            2,
+            0.55
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "wardrobe",
+          "size": [
+            0.85,
+            0.5,
+            1.95
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "nightstand",
+          "size": [
+            0.4,
+            0.38,
+            0.52
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "门内明亮参考角度，展示复用的床柜尺度。"
+    },
+    {
+      "id": "U5",
+      "asset_id": "ASSET-084",
+      "name": "原主卧／四号客房",
+      "events": "A33/H5/V2",
+      "visual": "略宽的旧主卧，保留深木床架与小梳妆台，现代床品克制。梳妆台不配巨大落地镜，只保留可放手镜的旧托位。",
+      "must_read": "U1与U8两个正常门；V2镜中旧门对应现实完整外墙，绝不能在正常M模型里开第三扇门。",
+      "states": "M：现代床品、旧台与完整墙；镜景W：空椅、遮光布、过去的窄门；G残影仅平面参考。",
+      "props": [
+        {
+          "kit": "bed_double",
+          "size": [
+            1.65,
+            2.05,
+            0.58
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "dressing_table",
+          "size": [
+            1,
+            0.42,
+            0.78
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "chair",
+          "size": [
+            0.48,
+            0.48,
+            0.85
+          ],
+          "placement": "center",
+          "dynamic": false
+        }
+      ],
+      "camera": "从短廊入口看梳妆台与阳台门；补手镜托位和旧门/实体墙对照。"
+    },
+    {
+      "id": "U6",
+      "asset_id": "ASSET-085",
+      "name": "电话小厅",
+      "events": "A26–A30",
+      "visual": "小家庭起居角，一张旧电话桌、木椅、分格木窗。电话是画面重点，桌边杯碟提供可见同步线索，不搭建接待大厅。",
+      "must_read": "通U1和U8；能看后院方向；电话、听筒、铃盒/可见震动件与杯碟分开。",
+      "states": "M：保留的旧电话陈设；W仅桌面生活片段；G声音副本发生在U1而非另加电话。",
+      "props": [
+        {
+          "kit": "phone_table",
+          "size": [
+            0.72,
+            0.4,
+            0.75
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "chair",
+          "size": [
+            0.48,
+            0.48,
+            0.85
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "入口看电话桌与窗；补电话/杯碟作为声源证据。"
+    },
+    {
+      "id": "U7",
+      "asset_id": "ASSET-086",
+      "name": "共用浴室",
+      "events": "A05/A07",
+      "visual": "紧凑淋浴间，南侧为白灰小砖的磨砂玻璃淋浴屏，西侧为小洗手台和普通热水管线。新龙头与旧门框形成翻修层次。",
+      "must_read": "试水点易靠近，湿区不侵占门口，热水故障只做声音/指示变化。",
+      "states": "仅M，不做大量水模拟。",
+      "props": [
+        {
+          "kit": "shower_zone",
+          "size": [
+            0.9,
+            0.9,
+            2.1
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "small_sink",
+          "size": [
+            0.55,
+            0.42,
+            0.85
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "门洞看淋浴和龙头，材质中性不反光过曝。"
+    },
+    {
+      "id": "U8",
+      "asset_id": "ASSET-087",
+      "name": "小阳台",
+      "events": "A33绕行",
+      "visual": "小型连通阳台，深色细铁栏杆，浅灰防滑地面，两端是电话厅和原主卧的门。仅一只花盆靠边。",
+      "must_read": "通行净宽与两个门扇都保留；望向后院晾衣杆与厨房窗；不可添加室外楼梯。",
+      "states": "M清晰基线；不另建W阳台。",
+      "props": [
+        {
+          "kit": "small_planter",
+          "size": [
+            0.32,
+            0.32,
+            0.42
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从电话厅门看原主卧方向及栏杆外院子。"
+    },
+    {
+      "id": "O1",
+      "asset_id": "ASSET-088",
+      "name": "前院与门廊",
+      "events": "A01/A40/A49/A50",
+      "visual": "浅石板与少量花坛的窄前院，低围墙铁门和一盏普通街灯。房子偏置，入口不居中，大部分地面可行走。",
+      "must_read": "院门外排水沟与街灯底座的连接；后勤小院捷径；门廊到F1主门平顺。",
+      "states": "黄昏/夜间/真实清晨只换光与外部断接小块；不用大型街景。",
+      "props": [
+        {
+          "kit": "planter_long",
+          "size": [
+            1.5,
+            0.45,
+            0.45
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "street_lamp",
+          "size": [
+            0.25,
+            0.25,
+            3.2
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从院门看偏置门廊与主楼正面；近景沟沿/灯座。"
+    },
+    {
+      "id": "O2",
+      "asset_id": "ASSET-089",
+      "name": "后院",
+      "events": "A18/A36/H1",
+      "visual": "生活化的后院，晾衣杆、少量盆栽、厨房窗与旧后门，墙脚局部湿痕，地面清扫过。留出绕院通道。",
+      "must_read": "可从U3/U6/U8辨認晾衣杆；厨房窗外旧钉孔与内侧对应；通O3侧巷。",
+      "states": "M为本夜基线；第二夜只预留W物件替换接口，不画战场。",
+      "props": [
+        {
+          "kit": "laundry_pole",
+          "size": [
+            1.6,
+            0.35,
+            2.1
+          ],
+          "placement": "wall",
+          "dynamic": false
+        },
+        {
+          "kit": "small_planter",
+          "size": [
+            0.35,
+            0.35,
+            0.4
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从厨房后门看晾衣杆与侧巷入口，背景可见二楼木窗。"
+    },
+    {
+      "id": "O3",
+      "asset_id": "ASSET-090",
+      "name": "狭窄侧巷",
+      "events": "A37",
+      "visual": "有天光的窄步行巷，洋楼侧墙与邻界围墙夹成，靠一侧的明沟把后院方向连向树院；管道只少量。",
+      "must_read": "O2/O4/O6三向关系与门号；沟沿连续；不要无尽重复拱廊。",
+      "states": "M；G相关假门实际位于O4，O3自身保持稳定锚点。",
+      "props": [
+        {
+          "kit": "downpipe",
+          "size": [
+            0.12,
+            0.12,
+            3
+          ],
+          "placement": "mounted",
+          "dynamic": false
+        }
+      ],
+      "camera": "从后院一端沿巷看树院方向，显示沟沿和天空。"
+    },
+    {
+      "id": "O4",
+      "asset_id": "ASSET-091",
+      "name": "公共树院",
+      "events": "A38",
+      "visual": "紧凑邻里公共院落，一棵树、低花池边与排水沟，朴素长凳靠墙。墙面有林远的简单方向记号。",
+      "must_read": "树根和沟沿为两项独立固定锚点；正常去O5的路清楚；G假门只在指定无通路墙面。",
+      "states": "M：正常墙与箭头；G：同一墙面显出重复箭头假门，树/沟绝不整体换位。",
+      "props": [
+        {
+          "kit": "tree_bed",
+          "size": [
+            1.6,
+            1.6,
+            0.4
+          ],
+          "placement": "center",
+          "dynamic": false
+        },
+        {
+          "kit": "outdoor_bench",
+          "size": [
+            1.25,
+            0.42,
+            0.78
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "站在侧巷出口看树与沟及正常回程口；补假门局部对照。"
+    },
+    {
+      "id": "O5",
+      "asset_id": "ASSET-092",
+      "name": "后勤小院",
+      "events": "A17/A39",
+      "visual": "一块朴素后勤院，洗衣间后门、窄工具架和连接前院的铁门。混凝土面局部修补，白布草视线可从门内透出。",
+      "must_read": "内侧门闩为捷径开启动作；O4/F9/O1连接不被工具与车占据；不增加载具。",
+      "states": "M为主，夜间光照不隐藏门闩。",
+      "props": [
+        {
+          "kit": "utility_shelf",
+          "size": [
+            0.85,
+            0.3,
+            1.35
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从树院来路看洗衣后门和前院捷径门，补门闩近景。"
+    },
+    {
+      "id": "O6",
+      "asset_id": "ASSET-093",
+      "name": "街角边界",
+      "events": "A37可选",
+      "visual": "侧巷尽端稍放宽的一角，路牌背面、封闭围挡和一小截现代路面。远处建筑以低细节天际线结束。",
+      "must_read": "林远折返痕迹；明确画外不开放，不画诱人的可探索新街道。",
+      "states": "仅M；留第二夜扩展接口但本次不制作后续场景。",
+      "props": [
+        {
+          "kit": "barrier",
+          "size": [
+            1.4,
+            0.15,
+            1.6
+          ],
+          "placement": "wall",
+          "dynamic": false
+        }
+      ],
+      "camera": "从侧巷看街角封闭边界，正常曝光。"
+    }
+  ]
+}

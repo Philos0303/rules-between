@@ -1,0 +1,93 @@
+[
+  {
+    "file": "views/floor0-SW.png",
+    "title": "《规则之间》一层室内 · SW俯瞰",
+    "azimuth_degrees": -125.48525448305303,
+    "elevation_degrees": 55.0,
+    "triangles": 1630
+  },
+  {
+    "file": "views/floor0-SE.png",
+    "title": "《规则之间》一层室内 · SE俯瞰",
+    "azimuth_degrees": 211.4658918140337,
+    "elevation_degrees": 55.0,
+    "triangles": 1630
+  },
+  {
+    "file": "views/floor0-NE.png",
+    "title": "《规则之间》一层室内 · NE俯瞰",
+    "azimuth_degrees": 125.485254483053,
+    "elevation_degrees": 55.0,
+    "triangles": 1630
+  },
+  {
+    "file": "views/floor0-NW.png",
+    "title": "《规则之间》一层室内 · NW俯瞰",
+    "azimuth_degrees": -211.46589181403374,
+    "elevation_degrees": 55.0,
+    "triangles": 1630
+  },
+  {
+    "file": "views/floor1-SW.png",
+    "title": "《规则之间》二层室内 · SW俯瞰",
+    "azimuth_degrees": 222.15213795407263,
+    "elevation_degrees": 55.0,
+    "triangles": 1180
+  },
+  {
+    "file": "views/floor1-SE.png",
+    "title": "《规则之间》二层室内 · SE俯瞰",
+    "azimuth_degrees": 57.16226631894739,
+    "elevation_degrees": 55.0,
+    "triangles": 1180
+  },
+  {
+    "file": "views/floor1-NE.png",
+    "title": "《规则之间》二层室内 · NE俯瞰",
+    "azimuth_degrees": 205.88553089145464,
+    "elevation_degrees": 55.0,
+    "triangles": 1180
+  },
+  {
+    "file": "views/floor1-NW.png",
+    "title": "《规则之间》二层室内 · NW俯瞰",
+    "azimuth_degrees": 370.8754025265799,
+    "elevation_degrees": 55.0,
+    "triangles": 1180
+  },
+  {
+    "file": "views/site-SW.png",
+    "title": "总场地与一层 · SW俯瞰",
+    "azimuth_degrees": -102.70951663134284,
+    "elevation_degrees": 62.0,
+    "triangles": 2220
+  },
+  {
+    "file": "views/site-NE.png",
+    "title": "总场地与一层 · NE俯瞰",
+    "azimuth_degrees": 102.70951663134281,
+    "elevation_degrees": 62.0,
+    "triangles": 2220
+  },
+  {
+    "file": "views/exploded-SW.png",
+    "title": "整体楼层关系 · 向上分解示意",
+    "azimuth_degrees": 431.2197376222461,
+    "elevation_degrees": 47.0,
+    "triangles": 3400
+  },
+  {
+    "file": "views/envelope-SW.png",
+    "title": "两层外壳与真实窗洞 · SW俯瞰",
+    "azimuth_degrees": 185.36070040791768,
+    "elevation_degrees": 42.0,
+    "triangles": 3160
+  },
+  {
+    "file": "views/envelope-NE.png",
+    "title": "两层外壳与真实窗洞 · NE俯瞰",
+    "azimuth_degrees": 164.28513994109943,
+    "elevation_degrees": 42.0,
+    "triangles": 3160
+  }
+]

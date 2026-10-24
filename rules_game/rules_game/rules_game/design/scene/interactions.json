@@ -1,0 +1,143 @@
+{
+  "version": "1.0",
+  "scope": "第一夜关键交互；位置以房间和墙面基准引用，世界坐标待几何代理与目标引擎导入实测。",
+  "rules": {
+    "mirror": "旧手镜只在V1/F4、V2/U5、V3/S三个固定观察位显示作者制作的旧景，不是真实全场反射或万能判真器。",
+    "ownership": "I4镜子在暗格、背包或一个镜托之一，不能复制。",
+    "dynamic_ownership": "门扇、窗帘、抽屉、镜托、灯、电话活动件、盒盖和所有危险blocker由目标引擎状态装配。",
+    "coordinate_policy": "禁止在本清单写死世界坐标；使用room_id、wall_reference、surface_reference与marker。"
+  },
+  "interactions": [
+    {
+      "id": "INT-01",
+      "name": "镜子暗格与双挡抽屉",
+      "room_id": "S",
+      "reference": "换鞋凳位于楼梯下方指定墙面；不占历史门补缝墙的观察区。",
+      "assets": ["dyn_drawer_bench_lower", "dyn_drawer_latch_right", "prop_shoe_cloth_01", "hero_mirror_hand_01", "dyn_mirror_stand_s"],
+      "size_m": {"bench": [1.05, 0.38, 0.47], "mirror_length": [0.22, 0.26], "mirror_face": [0.11, 0.15]},
+      "axes": {"drawer": "沿凳子短向单轴平移；第一挡约0.18m、第二挡约0.31m", "latch": "右内壁压片，按下后开启第二挡"},
+      "states": ["closed", "first_stop", "latch_inspected", "second_stop", "mirror_taken"],
+      "evidence": ["擦鞋布遮住镜子", "抽屉内深与外观不符", "第二挡滑轨和木挡可近看"],
+      "safe_retreat": "可随时关抽屉或离开；没有密码、污染或锁死。"
+    },
+    {
+      "id": "INT-02",
+      "name": "V1书房旧柜镜景",
+      "room_id": "F4",
+      "reference": "固定观察侧面向旧柜缺席墙，避开F3至F8动线。",
+      "assets": ["dyn_mirror_stand_v1", "marker_v1_mirror_view", "decal_cabinet_footprint", "decal_wall_ghost", "view_v1_old_cabinet"],
+      "size_m": {"stand_height": [0.72, 0.82], "stand_slot_width": 0.13},
+      "states": ["unavailable_pre_n4", "ready", "viewing", "verified"],
+      "evidence": ["镜中旧柜", "现实柜脚压痕", "现实墙面浅矩形"],
+      "safe_retreat": "放下镜子回现代书房；无门槛或死亡。"
+    },
+    {
+      "id": "INT-03",
+      "name": "V2原主卧旧门镜景",
+      "room_id": "U5",
+      "reference": "梳妆台旧托位，面向完整外墙；U1和U8两扇正常门保持可见。",
+      "assets": ["dyn_mirror_stand_v2", "marker_v2_mirror_view", "view_v2_old_door", "decal_wall_repair"],
+      "size_m": {"dressing_table": [1.0, 0.42, 0.78], "old_door_width": [0.78, 0.85]},
+      "states": ["ready", "viewing", "old_door_seen", "warning_frontier"],
+      "evidence": ["镜中旧门框", "镜中空椅和遮光布", "现实完整墙及修补层"],
+      "danger": "首次越过观察前沿给X1警告可退；第二次明确继续才迷失。",
+      "safe_retreat": "收镜回U1，或经U8回U6。"
+    },
+    {
+      "id": "INT-04",
+      "name": "V3楼梯历史门定位",
+      "room_id": "S",
+      "reference": "面对楼梯下方补缝墙；门净高不低于2.05m。",
+      "assets": ["dyn_mirror_stand_s", "marker_v3_mirror_view", "view_v3_history_threshold", "decal_stairwall_repair"],
+      "states": ["silhouette_only", "aligned_for_check", "threshold_checked", "history_door_open"],
+      "evidence": ["镜中旧门框", "镜外补缝", "门内外砖缝、门框和光源关系"],
+      "safe_retreat": "未对齐可收镜离开；错误跨越遵循X1双确认与稳定点恢复。"
+    },
+    {
+      "id": "INT-05",
+      "name": "电话实体声源核对",
+      "room_id": "U6",
+      "reference": "电话桌靠指定墙面，U1和U8出口均不被桌椅遮挡。",
+      "assets": ["hero_telephone_01", "dyn_phone_handset", "dyn_phone_bell", "dyn_cup_saucer", "marker_phone_check"],
+      "size_m": {"phone_table": [0.72, 0.4, 0.75]},
+      "axes": {"handset": "叉簧落点旋转/位置状态", "bell": "短幅可见摆动"},
+      "states": ["idle", "source_ringing", "handset_lifted", "source_stopped", "copy_heard", "verified"],
+      "evidence": ["铃锤与杯碟和第一次声音同步", "复制声时二者静止", "字幕说明来源方向"],
+      "danger": "追随无源复制声进入X3警告，无倒计时。",
+      "safe_retreat": "挂回听筒、停在桌前、回U1。"
+    },
+    {
+      "id": "INT-06",
+      "name": "配电箱与服务钥匙",
+      "room_id": "F8",
+      "reference": "电箱和透明钥匙盒同墙安装，周围保留检修站位和四向门前净空。",
+      "assets": ["dyn_breaker_box_door", "dyn_breaker_switch", "dyn_key_box_door", "hero_service_keyring_01", "marker_power_panel"],
+      "size_m": {"breaker_box": [0.55, 0.16, 0.7], "key_box": [0.22, 0.1, 0.28], "panel_center_height": [1.35, 1.55]},
+      "axes": {"covers": "单轴铰链；开盖不侵通道", "breaker": "有限角度拨杆"},
+      "states": ["box_visible", "key_box_open", "key_taken", "panel_open", "breaker_reset", "power_safe"],
+      "evidence": ["现代门锁与窗外路灯稳定", "维护标签", "拨杆状态"],
+      "safe_retreat": "提前拿钥匙、查看和开盖均安全；无接线或触电死亡。"
+    },
+    {
+      "id": "INT-07",
+      "name": "客厅灯与餐厅窗帘遮光",
+      "room_id": "F2/F3",
+      "reference": "F2台灯对F3窗线可见；F3双层帘及指定侧下摆搭扣面对室内。",
+      "assets": ["dyn_light_living", "dyn_curtain_dining_left", "dyn_curtain_dining_right", "dyn_curtain_latch", "marker_windowline"],
+      "axes": {"curtains": "沿直轨单轴平移", "latch": "短行程扣合"},
+      "states": ["curtain_open", "curtain_closed_unlatched", "curtain_sealed", "light_off", "light_on_safe", "light_on_exposed"],
+      "evidence": ["帘缝", "外部暗化", "窗框连续轮廓", "搭扣闭合形状"],
+      "danger": "N7帘未封即开灯先X2警告；关灯或封帘可退，二次调亮才死亡。",
+      "safe_retreat": "关灯或扣好搭扣。"
+    },
+    {
+      "id": "INT-08",
+      "name": "厨房遮光内衬与后门",
+      "room_id": "F5/O2",
+      "reference": "F5窗内衬对应O2可复查的窗外钉孔；后门内侧插销面对厨房。",
+      "assets": ["dyn_curtain_kitchen_liner", "decal_blackout_nailholes", "dyn_door_f5_o2", "dyn_bolt_f5_o2", "marker_kitchen_blackout_trace"],
+      "axes": {"liner": "上沿小轴旋转至预设打开角", "bolt": "直线短行程"},
+      "states": ["liner_closed", "liner_inspected", "nail_holes_seen", "door_latched_inside", "door_unlatched"],
+      "evidence": ["内衬", "窗框钉孔", "O2外侧同位置钉位"],
+      "safe_retreat": "翻回内衬、查看或开门均安全，不提前触发N7。"
+    },
+    {
+      "id": "INT-09",
+      "name": "O4树根、排水沟与假门",
+      "room_id": "O4",
+      "reference": "从O3入场可同时读树池与明沟，并保留O5正常出口。",
+      "assets": ["env_tree_bed_01", "env_open_drain_01", "decal_lin_arrow", "g_false_door_plane", "marker_o4_tree", "marker_o4_drain"],
+      "size_m": {"tree_bed": [1.6, 1.6, 0.4]},
+      "states": ["anchors_unchecked", "anchors_checked", "safe_route_seen", "false_door_hidden", "false_door_visible_warning", "false_door_blocked"],
+      "evidence": ["两处分叉树根", "连续沟沿", "可复制的箭头"],
+      "danger": "进入假门前沿先X4警告；继续才迷失。",
+      "safe_retreat": "走正常O5出口或退回O3。"
+    },
+    {
+      "id": "INT-10",
+      "name": "前院院门与真晨出口",
+      "room_id": "O1",
+      "reference": "门廊外低围墙铁门，门外沟沿与街灯底座在同一观察方向。",
+      "assets": ["dyn_gate_front", "dyn_gate_latch", "env_street_lamp_01", "env_drain_edge_01", "marker_gate_threshold"],
+      "axes": {"gate": "柱侧铰链，观察开角不夹玩家"},
+      "states": ["latch_stuck", "gate_observe_g", "gate_open_m"],
+      "evidence": ["路牌与沟沿关系", "门框地面连续", "街灯底座"],
+      "soft_result": "N3后选择走向路灯短黑场回O1，首次+5；不是死亡或新地图。",
+      "safe_retreat": "观察后取消并回O1；清晨复核证据后正常离开。"
+    },
+    {
+      "id": "INT-11",
+      "name": "林远录音机与外圈图",
+      "room_id": "F10",
+      "reference": "值班桌面近前侧，播放器和纸图均可从门内第一视角辨认。",
+      "assets": ["hero_recorder_01", "prop_route_map_01", "dyn_recorder_play_control", "marker_recorder_check"],
+      "size_m": {"duty_desk": [1.05, 0.5, 0.75], "recorder_max": [0.22, 0.14, 0.08]},
+      "axes": {"play_control": "短行程按键或拨杆；无复杂调频"},
+      "states": ["on_table", "playing", "paused", "taken", "silhouette_left"],
+      "evidence": ["播放指示", "逐句字幕/可读转录", "桌上外圈示意图"],
+      "safe_retreat": "可暂停、重听、离开；设备静止时外部同声不能被误判为它在播放。"
+    }
+  ],
+  "route_order": ["INT-06", "INT-08", "INT-05", "INT-11", "INT-09", "INT-01", "INT-02", "INT-03", "INT-04", "INT-07", "INT-10"],
+  "validation": ["所有动态件有可检查pivot和闭合默认变换", "镜子只有固定V1-V3镜景", "每个危险前沿具退路和二次确认", "优化GLB保留全部物理证据", "世界坐标待几何代理和目标引擎导入实测"]
+}

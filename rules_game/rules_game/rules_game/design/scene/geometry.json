@@ -1,0 +1,2007 @@
+{
+  "metadata": {
+    "document": "Night 1 metric layout and modeling reference",
+    "version": "1.1-layout-reference",
+    "coordinate_system": "Blender: X east, Y north, Z up; units are metres.",
+    "geometry_basis": "All room polygons describe structural wall centerlines at the room perimeter, or site boundary centerlines outdoors. Shared rooms use the same centerline once. Finished clear walkable faces are produced by offsetting each interior wall centerline inward by 0.10 m and each exterior wall centerline inward by 0.15 m; do not offset two adjacent rooms independently. Listed room dimensions are therefore centerline dimensions, not promised net-area measurements.",
+    "floor_levels": {
+      "ground_z": 0.0,
+      "upper_z": 3.6,
+      "typical_clear_height": 3.2
+    },
+    "opening_edge_convention": "For every planar opening, center[0:2] lies on the listed common wall-centerline boundary: axis X means the boundary is constant-Y and the opening extends along X; axis Y means the boundary is constant-X and the opening extends along Y. center[2] is the finished-floor bottom elevation. Width is the clear opening measured along axis; height is clear vertical opening. D20 is the sole vertical-circulation exception: its center is the upper-floor landing threshold at z=3.60, inside the S/U1 stacked footprint.",
+    "window_convention": "Each window center is [X,Y,Z] at the geometric centre of the glazed opening. sill is its finished-floor bottom elevation above its room z; thus center[2] must equal room.z + sill + height/2. axis uses the same wall convention as openings. A window must lie on an exterior wall-centerline, not a room-to-room partition or door span. view_to names the first authored exterior zone reached by a perpendicular sight ray; it does not imply a walkable connection.",
+    "structural_support": {
+      "upper_front_guest_wing": "U2, U4 and U7 project south of the ground-storey facade over a covered front porte-cochere/veranda. This is a supported two-storey bay, not a cantilever: 300 mm rendered masonry piers/columns are required at (-3.7,-3.2), (-0.6,-3.2), (2.1,-3.2), (5.0,-3.2) and (7.4,-2.0), tied to a front beam below the upper facade. The north edge bears on the F1/F2/F8 ground walls.",
+      "upper_rear_chain": "S extends north to y=6.40 as an enclosed stair/storey base, directly carrying U6. U8 bears on F5/F6/F2/F3; U5 bears on F3/F4; U3 bears on F4 plus the F9/F10 service-wing wall. U8 is a 2.80 m deep covered balcony supported by the lower living/kitchen beam grid; it has no unsupported free span beyond 2.80 m.",
+      "stair_and_history_wall": "S is 4.00 m by 5.80 m at ground level. Its two non-overlapping 2.00 m flights and 1.30 m turning landing sit in the south stair void. The upper floor slab excludes their entire x=-3.55..-0.25, y=0.80..3.20 envelope. The north portion is enclosed stair-store support below U6. The history observation wall is a north full-height wall at y=4.40, with a 0.95 m wide by 2.15 m high clear wall field; it is not under either stair flight, landing or upper platform."
+    },
+    "building_intent": "An asymmetric 1930s Shanghai villa: a compact main living block, a west/rear kitchen wing, and a narrower east service wing. Four guest rooms are U2-U5. U5 is the retained original principal bedroom. U8 is an open covered balcony, not an extra enclosed room.",
+    "scope_note": "Current design baseline derived from the confirmed Night 1 playthrough. It is not a surveyed building and does not claim as-built measurement verification."
+  },
+  "rooms": [
+    {
+      "id": "F1",
+      "name": "玄关",
+      "floor": 0,
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          12.8,
+          0
+        ],
+        [
+          12.8,
+          1.4
+        ],
+        [
+          3.6,
+          1.4
+        ],
+        [
+          3.6,
+          3.2
+        ],
+        [
+          0,
+          3.2
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.2,
+      "role": "arrival threshold, front-door evidence, safe access to living loop and stairs"
+    },
+    {
+      "id": "F2",
+      "name": "客厅",
+      "floor": 0,
+      "polygon": [
+        [
+          3.6,
+          1.4
+        ],
+        [
+          8.6,
+          1.4
+        ],
+        [
+          8.6,
+          4.4
+        ],
+        [
+          3.6,
+          4.4
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.2,
+      "role": "living room, notebook and final wait"
+    },
+    {
+      "id": "F3",
+      "name": "餐厅",
+      "floor": 0,
+      "polygon": [
+        [
+          3.6,
+          4.4
+        ],
+        [
+          8.6,
+          4.4
+        ],
+        [
+          8.6,
+          7.8
+        ],
+        [
+          3.6,
+          7.8
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.2,
+      "role": "dining room, early displacement and blackout curtain sequence"
+    },
+    {
+      "id": "F4",
+      "name": "书房",
+      "floor": 0,
+      "polygon": [
+        [
+          8.6,
+          4.4
+        ],
+        [
+          12.8,
+          4.4
+        ],
+        [
+          12.8,
+          7.8
+        ],
+        [
+          8.6,
+          7.8
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.2,
+      "role": "study, old plan, Lin Yuan notes and mirror V1"
+    },
+    {
+      "id": "F5",
+      "name": "厨房",
+      "floor": 0,
+      "polygon": [
+        [
+          0,
+          5.0
+        ],
+        [
+          1.8,
+          5.0
+        ],
+        [
+          1.8,
+          3.2
+        ],
+        [
+          3.6,
+          3.2
+        ],
+        [
+          3.6,
+          7.8
+        ],
+        [
+          0,
+          7.8
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.2,
+      "role": "kitchen, hot-water fault and rear-yard baseline"
+    },
+    {
+      "id": "F6",
+      "name": "储物小间",
+      "floor": 0,
+      "polygon": [
+        [
+          0,
+          3.2
+        ],
+        [
+          1.8,
+          3.2
+        ],
+        [
+          1.8,
+          5.0
+        ],
+        [
+          0,
+          5.0
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.0,
+      "role": "small pantry and emergency torch rack"
+    },
+    {
+      "id": "F7",
+      "name": "一楼公共卫生间",
+      "floor": 0,
+      "polygon": [
+        [
+          12.8,
+          1.4
+        ],
+        [
+          15.0,
+          1.4
+        ],
+        [
+          15.0,
+          3.0
+        ],
+        [
+          12.8,
+          3.0
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.0,
+      "role": "public bathroom and plumbing baseline"
+    },
+    {
+      "id": "F8",
+      "name": "服务短廊",
+      "floor": 0,
+      "polygon": [
+        [
+          8.6,
+          1.4
+        ],
+        [
+          12.8,
+          1.4
+        ],
+        [
+          12.8,
+          4.4
+        ],
+        [
+          8.6,
+          4.4
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.0,
+      "role": "service corridor, electrical panel and safe landmark"
+    },
+    {
+      "id": "F9",
+      "name": "布草洗衣间",
+      "floor": 0,
+      "polygon": [
+        [
+          12.8,
+          3.0
+        ],
+        [
+          15.0,
+          3.0
+        ],
+        [
+          15.0,
+          5.8
+        ],
+        [
+          12.8,
+          5.8
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.0,
+      "role": "laundry, linen storage and rear-service exit"
+    },
+    {
+      "id": "F10",
+      "name": "值班室（原看管人房间）",
+      "floor": 0,
+      "polygon": [
+        [
+          12.8,
+          5.8
+        ],
+        [
+          15.0,
+          5.8
+        ],
+        [
+          15.0,
+          8.4
+        ],
+        [
+          12.8,
+          8.4
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.0,
+      "role": "duty room, Lin Yuan recorder and outer-route diagram"
+    },
+    {
+      "id": "S",
+      "name": "主楼梯及下方换鞋凳",
+      "floor": "0-1",
+      "polygon": [
+        [
+          -4.0,
+          0.6
+        ],
+        [
+          0,
+          0.6
+        ],
+        [
+          0,
+          6.4
+        ],
+        [
+          -4.0,
+          6.4
+        ]
+      ],
+      "z": 0.0,
+      "height": 3.2,
+      "role": "single main stair; south dogleg stair void, north enclosed support/store below U6, full-height history-door observation vestibule; upper flight and slab void are separately defined in stair"
+    },
+    {
+      "id": "U1",
+      "name": "二楼短廊",
+      "floor": 1,
+      "polygon": [
+        [
+          -4.0,
+          0.6
+        ],
+        [
+          14.0,
+          0.6
+        ],
+        [
+          14.0,
+          3.6
+        ],
+        [
+          -4.0,
+          3.6
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "upper distribution corridor and the only G-loop access spine"
+    },
+    {
+      "id": "U2",
+      "name": "一号客房（玩家客房）",
+      "floor": 1,
+      "polygon": [
+        [
+          -4.0,
+          -3.2
+        ],
+        [
+          1.2,
+          -3.2
+        ],
+        [
+          1.2,
+          0.6
+        ],
+        [
+          -4.0,
+          0.6
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "player room, luggage, rest and epilogue wake-up; supported over front veranda"
+    },
+    {
+      "id": "U3",
+      "name": "二号客房",
+      "floor": 1,
+      "polygon": [
+        [
+          10.6,
+          3.6
+        ],
+        [
+          14.0,
+          3.6
+        ],
+        [
+          14.0,
+          7.2
+        ],
+        [
+          10.6,
+          7.2
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "earlier explorer's records, repeated-route evidence and rear-yard sight line"
+    },
+    {
+      "id": "U4",
+      "name": "三号客房",
+      "floor": 1,
+      "polygon": [
+        [
+          1.2,
+          -3.2
+        ],
+        [
+          5.0,
+          -3.2
+        ],
+        [
+          5.0,
+          0.6
+        ],
+        [
+          1.2,
+          0.6
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "vacant guest room and renovation evidence"
+    },
+    {
+      "id": "U5",
+      "name": "四号客房（原主卧）",
+      "floor": 1,
+      "polygon": [
+        [
+          5.7,
+          3.6
+        ],
+        [
+          10.6,
+          3.6
+        ],
+        [
+          10.6,
+          7.8
+        ],
+        [
+          5.7,
+          7.8
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "original principal bedroom, dressing table and mirror V2"
+    },
+    {
+      "id": "U6",
+      "name": "电话厅",
+      "floor": 1,
+      "polygon": [
+        [
+          -4.0,
+          3.6
+        ],
+        [
+          1.2,
+          3.6
+        ],
+        [
+          1.2,
+          6.4
+        ],
+        [
+          -4.0,
+          6.4
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "telephone source-verification scene and G-loop origin"
+    },
+    {
+      "id": "U7",
+      "name": "二楼公共浴室",
+      "floor": 1,
+      "polygon": [
+        [
+          5.0,
+          -2.0
+        ],
+        [
+          7.4,
+          -2.0
+        ],
+        [
+          7.4,
+          0.6
+        ],
+        [
+          5.0,
+          0.6
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.0,
+      "role": "shared bathroom and early hot-water baseline"
+    },
+    {
+      "id": "U8",
+      "name": "二楼阳台",
+      "floor": 1,
+      "polygon": [
+        [
+          1.2,
+          3.6
+        ],
+        [
+          5.7,
+          3.6
+        ],
+        [
+          5.7,
+          6.4
+        ],
+        [
+          1.2,
+          6.4
+        ]
+      ],
+      "z": 3.6,
+      "height": 3.1,
+      "role": "4.5m-wide covered open balcony, visible rear-yard anchor and safe bypass around the G corridor"
+    },
+    {
+      "id": "O1",
+      "name": "前院与门廊",
+      "floor": "outside",
+      "polygon": [
+        [
+          -4,
+          -6
+        ],
+        [
+          15,
+          -6
+        ],
+        [
+          15,
+          0
+        ],
+        [
+          -4,
+          0
+        ]
+      ],
+      "z": 0.0,
+      "height": 0.0,
+      "role": "arrival forecourt, front gate and real-dawn exit check"
+    },
+    {
+      "id": "O2",
+      "name": "后院",
+      "floor": "outside",
+      "polygon": [
+        [
+          -6,
+          7.8
+        ],
+        [
+          12.8,
+          7.8
+        ],
+        [
+          12.8,
+          9.0
+        ],
+        [
+          10.5,
+          9.0
+        ],
+        [
+          10.5,
+          14.0
+        ],
+        [
+          -6,
+          14.0
+        ]
+      ],
+      "z": 0.0,
+      "height": 0.0,
+      "role": "rear yard, laundry line, kitchen window and blackout nail evidence"
+    },
+    {
+      "id": "O3",
+      "name": "狭窄侧巷",
+      "floor": "outside",
+      "polygon": [
+        [
+          10.5,
+          9.0
+        ],
+        [
+          13.0,
+          9.0
+        ],
+        [
+          13.0,
+          17.0
+        ],
+        [
+          10.5,
+          17.0
+        ]
+      ],
+      "z": 0.0,
+      "height": 0.0,
+      "role": "narrow side alley, continuous-path comparison and street-corner branch"
+    },
+    {
+      "id": "O4",
+      "name": "公共院落",
+      "floor": "outside",
+      "polygon": [
+        [
+          13.0,
+          12.0
+        ],
+        [
+          20.0,
+          12.0
+        ],
+        [
+          20.0,
+          17.0
+        ],
+        [
+          13.0,
+          17.0
+        ]
+      ],
+      "z": 0.0,
+      "height": 0.0,
+      "role": "public courtyard, tree and drainage-ditch anchors, false-arrow facade"
+    },
+    {
+      "id": "O5",
+      "name": "后勤小院",
+      "floor": "outside",
+      "polygon": [
+        [
+          15,
+          -2
+        ],
+        [
+          20,
+          -2
+        ],
+        [
+          20,
+          12
+        ],
+        [
+          15,
+          12
+        ]
+      ],
+      "z": 0.0,
+      "height": 0.0,
+      "role": "service court, laundry return and bolted shortcut to front court"
+    },
+    {
+      "id": "O6",
+      "name": "街角边界",
+      "floor": "outside",
+      "polygon": [
+        [
+          10.5,
+          17.0
+        ],
+        [
+          13.0,
+          17.0
+        ],
+        [
+          13.0,
+          21.0
+        ],
+        [
+          10.5,
+          21.0
+        ]
+      ],
+      "z": 0.0,
+      "height": 0.0,
+      "role": "sealed street-corner observation boundary"
+    }
+  ],
+  "stair": {
+    "room": "S",
+    "floor_to_floor_rise": 3.6,
+    "clear_width": 1.15,
+    "riser_count": 18,
+    "riser_height": 0.2,
+    "going_count_per_flight": 8,
+    "going_depth": 0.25,
+    "flight_run": 2.0,
+    "minimum_clear_headroom": 2.1,
+    "lower_flight": {
+      "polygon": [
+        [
+          -2.25,
+          0.8
+        ],
+        [
+          -0.25,
+          0.8
+        ],
+        [
+          -0.25,
+          1.95
+        ],
+        [
+          -2.25,
+          1.95
+        ]
+      ],
+      "rise_from_z": 0.0,
+      "rise_to_z": 1.8,
+      "direction": "descends east from turning landing to ground entry"
+    },
+    "upper_flight": {
+      "polygon": [
+        [
+          -2.25,
+          2.05
+        ],
+        [
+          -0.25,
+          2.05
+        ],
+        [
+          -0.25,
+          3.2
+        ],
+        [
+          -2.25,
+          3.2
+        ]
+      ],
+      "rise_from_z": 1.8,
+      "rise_to_z": 3.6,
+      "direction": "ascends east from turning landing to upper landing"
+    },
+    "turning_landing": {
+      "polygon": [
+        [
+          -3.55,
+          0.8
+        ],
+        [
+          -2.25,
+          0.8
+        ],
+        [
+          -2.25,
+          3.2
+        ],
+        [
+          -3.55,
+          3.2
+        ]
+      ],
+      "clear_depth": 1.3,
+      "clear_width": 2.4,
+      "z": 1.8
+    },
+    "upper_landing": {
+      "polygon": [
+        [
+          -0.25,
+          2.05
+        ],
+        [
+          1.2,
+          2.05
+        ],
+        [
+          1.2,
+          3.6
+        ],
+        [
+          -0.25,
+          3.6
+        ]
+      ],
+      "z": 3.6,
+      "clear_depth": 1.55,
+      "clear_width": 1.15,
+      "owner": "U1"
+    },
+    "upper_floor_slab_opening": [
+      [
+        -3.55,
+        0.8
+      ],
+      [
+        -0.25,
+        0.8
+      ],
+      [
+        -0.25,
+        3.2
+      ],
+      [
+        -3.55,
+        3.2
+      ]
+    ],
+    "u1_floor_deck_exclusion_note": "U1 owns the upper landing and all remaining floor area. Its floor deck must omit upper_floor_slab_opening; provide a 1.10 m high guardrail along the opening edge, without creating an additional walkable exit.",
+    "u1_player_radius": 0.4,
+    "u1_door_access": [
+      {
+        "door": "D21",
+        "solid_pad_polygon": [
+          [
+            -0.25,
+            0.6
+          ],
+          [
+            1.2,
+            0.6
+          ],
+          [
+            1.2,
+            2.05
+          ],
+          [
+            -0.25,
+            2.05
+          ]
+        ],
+        "minimum_clear_width": 1.0,
+        "door_center_setback_from_slab_hole": 0.8,
+        "navmesh_exclusion": [
+          [
+            -4.0,
+            0.6
+          ],
+          [
+            -0.25,
+            0.6
+          ],
+          [
+            -0.25,
+            0.8
+          ],
+          [
+            -4.0,
+            0.8
+          ]
+        ],
+        "note": "The 0.20m south rim west of the pad is a non-walkable guarded/decorative edge. D21 is reached through the 1.45m-wide solid pad, never across this rim."
+      },
+      {
+        "door": "D25",
+        "solid_pad_polygon": [
+          [
+            -0.25,
+            2.05
+          ],
+          [
+            1.2,
+            2.05
+          ],
+          [
+            1.2,
+            3.6
+          ],
+          [
+            -0.25,
+            3.6
+          ]
+        ],
+        "minimum_clear_width": 1.0,
+        "door_center_setback_from_slab_hole": 0.4,
+        "navmesh_exclusion": [
+          [
+            -4.0,
+            3.2
+          ],
+          [
+            -0.25,
+            3.2
+          ],
+          [
+            -0.25,
+            3.6
+          ],
+          [
+            -4.0,
+            3.6
+          ]
+        ],
+        "note": "The 0.40m north rim west of the access pad is a non-walkable guarded/decorative edge. Player navigation from the upper landing to D25 remains on the 1.45m-wide solid pad; its 1.00m clear path is not routed across the narrow rim."
+      }
+    ],
+    "history_wall_field": {
+      "wall_line": [
+        [
+          -1.2,
+          4.4
+        ],
+        [
+          -0.25,
+          4.4
+        ]
+      ],
+      "faces": "south",
+      "clear_width": 0.95,
+      "clear_height": 2.15,
+      "z_base": 0.0,
+      "location_note": "This is the north wall of the full-height y=3.20..4.40 side vestibule. It is clear of both flight polygons, the turning landing and the upper platform."
+    },
+    "ground_nonwalkable": [
+      [
+        [
+          -2.25,
+          0.8
+        ],
+        [
+          -0.25,
+          0.8
+        ],
+        [
+          -0.25,
+          1.95
+        ],
+        [
+          -2.25,
+          1.95
+        ]
+      ],
+      [
+        [
+          -3.55,
+          0.8
+        ],
+        [
+          -2.25,
+          0.8
+        ],
+        [
+          -2.25,
+          3.2
+        ],
+        [
+          -3.55,
+          3.2
+        ]
+      ],
+      [
+        [
+          -2.25,
+          2.05
+        ],
+        [
+          -1.2,
+          2.05
+        ],
+        [
+          -1.2,
+          3.2
+        ],
+        [
+          -2.25,
+          3.2
+        ]
+      ]
+    ],
+    "ground_nonwalkable_note": "平面导航只把下跑入口作为登梯交互；低净空梯下/转台下禁止通行，东侧高净空处通往镜子前室。"
+  },
+  "support_plan": {
+    "ground_bearing_rooms": [
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "F7",
+      "F8",
+      "F9",
+      "F10",
+      "S"
+    ],
+    "front_veranda_support": {
+      "beam_centerline": [
+        [
+          -4.0,
+          -3.2
+        ],
+        [
+          5.0,
+          -3.2
+        ]
+      ],
+      "columns": [
+        [
+          -3.7,
+          -3.2
+        ],
+        [
+          -0.6,
+          -3.2
+        ],
+        [
+          2.1,
+          -3.2
+        ],
+        [
+          5.0,
+          -3.2
+        ],
+        [
+          7.4,
+          -2.0
+        ]
+      ],
+      "column_size": [
+        0.3,
+        0.3
+      ],
+      "supports": [
+        "U1",
+        "U2",
+        "U4",
+        "U7"
+      ]
+    },
+    "full_plan_support": [
+      {
+        "upper": "U6",
+        "by": [
+          "S",
+          "F5",
+          "F6"
+        ],
+        "method": "continuous ground-storey bearing footprint"
+      },
+      {
+        "upper": "U8",
+        "by": [
+          "F2",
+          "F3",
+          "F5",
+          "F6"
+        ],
+        "method": "continuous ground-storey bearing footprint"
+      },
+      {
+        "upper": "U5",
+        "by": [
+          "F3",
+          "F4"
+        ],
+        "method": "continuous ground-storey bearing footprint"
+      },
+      {
+        "upper": "U3",
+        "by": [
+          "F4",
+          "F9",
+          "F10"
+        ],
+        "method": "continuous ground-storey bearing footprint"
+      }
+    ],
+    "bearing_line_support": [
+      {
+        "upper": "U1",
+        "by": [
+          "S",
+          "F1",
+          "F2",
+          "F5",
+          "F6",
+          "F7",
+          "F8",
+          "F9",
+          "front_veranda_support"
+        ],
+        "method": "ground walls plus front beam at the shallow south projection"
+      },
+      {
+        "upper": "U2",
+        "by": [
+          "S",
+          "F1",
+          "front_veranda_support"
+        ],
+        "method": "ground wall plus front veranda beam/columns"
+      },
+      {
+        "upper": "U4",
+        "by": [
+          "F1",
+          "F2",
+          "front_veranda_support"
+        ],
+        "method": "ground wall plus front veranda beam/columns"
+      },
+      {
+        "upper": "U7",
+        "by": [
+          "F2",
+          "F8",
+          "front_veranda_support"
+        ],
+        "method": "ground wall plus front veranda beam/columns"
+      }
+    ]
+  },
+  "openings": [
+    {
+      "id": "D01",
+      "a": "O1",
+      "b": "F1",
+      "center": [
+        1.8,
+        0,
+        0
+      ],
+      "width": 1.4,
+      "height": 2.4,
+      "axis": "X",
+      "kind": "front_door",
+      "gate": "order_unlocked"
+    },
+    {
+      "id": "D02",
+      "a": "O1",
+      "b": "O5",
+      "center": [
+        15,
+        -1,
+        0
+      ],
+      "width": 1.1,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "yard_gate",
+      "gate": "O5_side_bolt"
+    },
+    {
+      "id": "D03",
+      "a": "O5",
+      "b": "F9",
+      "center": [
+        15,
+        4.4,
+        0
+      ],
+      "width": 0.9,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "service_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D04",
+      "a": "O5",
+      "b": "O4",
+      "center": [
+        16.5,
+        12,
+        0
+      ],
+      "width": 1.2,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "yard_gate",
+      "gate": "open_after_N2"
+    },
+    {
+      "id": "D05",
+      "a": "O4",
+      "b": "O3",
+      "center": [
+        13.0,
+        14.2,
+        0
+      ],
+      "width": 1.1,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "alley_gate",
+      "gate": "open_after_N2"
+    },
+    {
+      "id": "D06",
+      "a": "O3",
+      "b": "O2",
+      "center": [
+        10.5,
+        10.6,
+        0
+      ],
+      "width": 1.1,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "side_gate",
+      "gate": "I2"
+    },
+    {
+      "id": "D07",
+      "a": "O3",
+      "b": "O6",
+      "center": [
+        11.7,
+        17.0,
+        0
+      ],
+      "width": 1.0,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "sealed_boundary_gate",
+      "gate": "never_open"
+    },
+    {
+      "id": "D08",
+      "a": "F5",
+      "b": "O2",
+      "center": [
+        2.7,
+        7.8,
+        0
+      ],
+      "width": 1.0,
+      "height": 2.1,
+      "axis": "X",
+      "kind": "kitchen_rear_door",
+      "gate": "inside_bolt"
+    },
+    {
+      "id": "D09",
+      "a": "F1",
+      "b": "F2",
+      "center": [
+        5.8,
+        1.4,
+        0
+      ],
+      "width": 1.5,
+      "height": 2.5,
+      "axis": "X",
+      "kind": "wide_internal_doorway",
+      "gate": "always_open"
+    },
+    {
+      "id": "D10",
+      "a": "F1",
+      "b": "F8",
+      "center": [
+        10.6,
+        1.4,
+        0
+      ],
+      "width": 1.0,
+      "height": 2.1,
+      "axis": "X",
+      "kind": "service_hall_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D11",
+      "a": "F1",
+      "b": "S",
+      "center": [
+        0,
+        1.9,
+        0
+      ],
+      "width": 1.0,
+      "height": 2.2,
+      "axis": "Y",
+      "kind": "stair_hall_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D12",
+      "a": "F2",
+      "b": "F3",
+      "center": [
+        6.2,
+        4.4,
+        0
+      ],
+      "width": 1.4,
+      "height": 2.4,
+      "axis": "X",
+      "kind": "wide_internal_doorway",
+      "gate": "always_open"
+    },
+    {
+      "id": "D13",
+      "a": "F3",
+      "b": "F4",
+      "center": [
+        8.6,
+        6.0,
+        0
+      ],
+      "width": 1.0,
+      "height": 2.2,
+      "axis": "Y",
+      "kind": "study_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D14",
+      "a": "F3",
+      "b": "F5",
+      "center": [
+        3.6,
+        5.4,
+        0
+      ],
+      "width": 1.0,
+      "height": 2.1,
+      "axis": "Y",
+      "kind": "kitchen_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D15",
+      "a": "F4",
+      "b": "F8",
+      "center": [
+        10.4,
+        4.4,
+        0
+      ],
+      "width": 0.9,
+      "height": 2.1,
+      "axis": "X",
+      "kind": "study_service_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D16",
+      "a": "F5",
+      "b": "F6",
+      "center": [
+        1.8,
+        4.1,
+        0
+      ],
+      "width": 0.8,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "pantry_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D17",
+      "a": "F8",
+      "b": "F7",
+      "center": [
+        12.8,
+        2.2,
+        0
+      ],
+      "width": 0.8,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "bathroom_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D18",
+      "a": "F8",
+      "b": "F9",
+      "center": [
+        12.8,
+        3.7,
+        0
+      ],
+      "width": 0.9,
+      "height": 2.0,
+      "axis": "Y",
+      "kind": "laundry_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D19",
+      "a": "F9",
+      "b": "F10",
+      "center": [
+        13.9,
+        5.8,
+        0
+      ],
+      "width": 0.9,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "duty_room_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D20",
+      "a": "S",
+      "b": "U1",
+      "center": [
+        0.4,
+        3.2,
+        3.6
+      ],
+      "width": 1.15,
+      "height": 2.2,
+      "axis": "X",
+      "kind": "stair_top_landing",
+      "gate": "always_open"
+    },
+    {
+      "id": "D21",
+      "a": "U1",
+      "b": "U2",
+      "center": [
+        0.6,
+        0.6,
+        3.6
+      ],
+      "width": 0.9,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "guest_room_door",
+      "gate": "order_unlocked"
+    },
+    {
+      "id": "D22",
+      "a": "U1",
+      "b": "U3",
+      "center": [
+        12.3,
+        3.6,
+        3.6
+      ],
+      "width": 0.9,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "guest_room_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D23",
+      "a": "U1",
+      "b": "U4",
+      "center": [
+        3.0,
+        0.6,
+        3.6
+      ],
+      "width": 0.9,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "guest_room_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D24",
+      "a": "U1",
+      "b": "U5",
+      "center": [
+        8.2,
+        3.6,
+        3.6
+      ],
+      "width": 1.0,
+      "height": 2.1,
+      "axis": "X",
+      "kind": "principal_room_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D25",
+      "a": "U1",
+      "b": "U6",
+      "center": [
+        0.55,
+        3.6,
+        3.6
+      ],
+      "width": 1.0,
+      "height": 2.1,
+      "axis": "X",
+      "kind": "telephone_hall_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D26",
+      "a": "U1",
+      "b": "U7",
+      "center": [
+        6.1,
+        0.6,
+        3.6
+      ],
+      "width": 0.8,
+      "height": 2.0,
+      "axis": "X",
+      "kind": "upper_bathroom_door",
+      "gate": "always_open"
+    },
+    {
+      "id": "D27",
+      "a": "U5",
+      "b": "U8",
+      "center": [
+        5.7,
+        4.8,
+        3.6
+      ],
+      "width": 1.2,
+      "height": 2.2,
+      "axis": "Y",
+      "kind": "balcony_side_door",
+      "gate": "I2"
+    },
+    {
+      "id": "D28",
+      "a": "U6",
+      "b": "U8",
+      "center": [
+        1.2,
+        4.8,
+        3.6
+      ],
+      "width": 1.2,
+      "height": 2.2,
+      "axis": "Y",
+      "kind": "balcony_opening",
+      "gate": "always_open"
+    }
+  ],
+  "windows": [
+    {
+      "id": "W02",
+      "room": "F3",
+      "center": [
+        5.7,
+        7.8,
+        1.475
+      ],
+      "width": 1.4,
+      "height": 1.45,
+      "sill": 0.75,
+      "axis": "X",
+      "view_to": "O2"
+    },
+    {
+      "id": "W03",
+      "room": "F5",
+      "center": [
+        0.9,
+        7.8,
+        1.725
+      ],
+      "width": 1.2,
+      "height": 1.25,
+      "sill": 1.1,
+      "axis": "X",
+      "view_to": "O2"
+    },
+    {
+      "id": "W04",
+      "room": "F4",
+      "center": [
+        10.7,
+        7.8,
+        1.475
+      ],
+      "width": 1.4,
+      "height": 1.45,
+      "sill": 0.75,
+      "axis": "X",
+      "view_to": "O2"
+    },
+    {
+      "id": "W05",
+      "room": "U3",
+      "center": [
+        12.4,
+        7.2,
+        4.975
+      ],
+      "width": 1.3,
+      "height": 1.35,
+      "sill": 0.7,
+      "axis": "X",
+      "view_to": "O2"
+    },
+    {
+      "id": "W06",
+      "room": "U6",
+      "center": [
+        -1.6,
+        6.4,
+        4.975
+      ],
+      "width": 1.3,
+      "height": 1.35,
+      "sill": 0.7,
+      "axis": "X",
+      "view_to": "O2"
+    },
+    {
+      "id": "W07",
+      "room": "U8",
+      "center": [
+        3.0,
+        6.4,
+        4.95
+      ],
+      "width": 2.0,
+      "height": 1.6,
+      "sill": 0.55,
+      "axis": "X",
+      "view_to": "O2",
+      "kind": "open_balcony_aperture",
+      "glazed": false,
+      "railing": {
+        "height": 1.1,
+        "mount": "outside_face",
+        "clear_width": 2.0
+      }
+    },
+    {
+      "id": "W08",
+      "room": "U5",
+      "center": [
+        8.1,
+        7.8,
+        5.025
+      ],
+      "width": 1.6,
+      "height": 1.45,
+      "sill": 0.7,
+      "axis": "X",
+      "view_to": "O2"
+    },
+    {
+      "id": "W09",
+      "room": "F9",
+      "center": [
+        15.0,
+        5.0,
+        1.85
+      ],
+      "width": 0.7,
+      "height": 0.8,
+      "sill": 1.45,
+      "axis": "Y",
+      "view_to": "O5"
+    },
+    {
+      "id": "W10",
+      "room": "U2",
+      "center": [
+        -1.2,
+        -3.2,
+        4.975
+      ],
+      "width": 1.4,
+      "height": 1.35,
+      "sill": 0.7,
+      "axis": "X",
+      "view_to": "O1"
+    },
+    {
+      "id": "W11",
+      "room": "U4",
+      "center": [
+        3.2,
+        -3.2,
+        4.975
+      ],
+      "width": 1.4,
+      "height": 1.35,
+      "sill": 0.7,
+      "axis": "X",
+      "view_to": "O1"
+    },
+    {
+      "id": "W12",
+      "room": "F10",
+      "center": [
+        15.0,
+        7.0,
+        1.475
+      ],
+      "width": 0.9,
+      "height": 1.45,
+      "sill": 0.75,
+      "axis": "Y",
+      "view_to": "O5"
+    },
+    {
+      "id": "W13",
+      "room": "U7",
+      "center": [
+        6.2,
+        -2.0,
+        5.575
+      ],
+      "width": 0.8,
+      "height": 0.65,
+      "sill": 1.65,
+      "axis": "X",
+      "view_to": "O1"
+    }
+  ],
+  "site_paths": [
+    {
+      "id": "P01",
+      "from": "O1",
+      "to": "F1",
+      "polyline": [
+        [
+          1.8,
+          -5.0,
+          0
+        ],
+        [
+          1.8,
+          0,
+          0
+        ]
+      ],
+      "surface": "front-court stone paving",
+      "note": "arrival line and dawn-exit evidence line"
+    },
+    {
+      "id": "P02",
+      "from": "F5",
+      "to": "O2",
+      "polyline": [
+        [
+          2.7,
+          7.2,
+          0
+        ],
+        [
+          2.7,
+          7.8,
+          0
+        ],
+        [
+          2.7,
+          10.8,
+          0
+        ]
+      ],
+      "surface": "rear kitchen paving",
+      "note": "kitchen window, laundry line and blackout nail marks stay in one sight field"
+    },
+    {
+      "id": "P03",
+      "from": "O2",
+      "to": "O3",
+      "polyline": [
+        [
+          9.7,
+          10.6,
+          0
+        ],
+        [
+          10.5,
+          10.6,
+          0
+        ],
+        [
+          11.75,
+          10.6,
+          0
+        ]
+      ],
+      "surface": "narrow stone side alley",
+      "note": "continuous drainage channel runs toward O4"
+    },
+    {
+      "id": "P04",
+      "from": "O3",
+      "to": "O4",
+      "polyline": [
+        [
+          11.75,
+          14.2,
+          0
+        ],
+        [
+          13.0,
+          14.2,
+          0
+        ],
+        [
+          16.5,
+          14.2,
+          0
+        ]
+      ],
+      "surface": "shared courtyard paving",
+      "note": "tree root and drainage ditch are both readable from the O4 center"
+    },
+    {
+      "id": "P05",
+      "from": "O4",
+      "to": "O5",
+      "polyline": [
+        [
+          16.5,
+          14.2,
+          0
+        ],
+        [
+          16.5,
+          12,
+          0
+        ],
+        [
+          16.5,
+          6.0,
+          0
+        ]
+      ],
+      "surface": "service-court paving",
+      "note": "normal exit is visibly distinct from the false-arrow facade in O4"
+    },
+    {
+      "id": "P06",
+      "from": "O5",
+      "to": "F9",
+      "polyline": [
+        [
+          16.5,
+          4.4,
+          0
+        ],
+        [
+          15,
+          4.4,
+          0
+        ],
+        [
+          13.9,
+          4.4,
+          0
+        ]
+      ],
+      "surface": "service paving",
+      "note": "laundry return"
+    },
+    {
+      "id": "P07",
+      "from": "O5",
+      "to": "O1",
+      "polyline": [
+        [
+          16.5,
+          -1.0,
+          0
+        ],
+        [
+          15,
+          -1.0,
+          0
+        ],
+        [
+          8,
+          -1.0,
+          0
+        ]
+      ],
+      "surface": "front service strip",
+      "note": "becomes the unlocked shortcut once its O5-side bolt is lifted"
+    },
+    {
+      "id": "P08",
+      "from": "O3",
+      "to": "O6",
+      "polyline": [
+        [
+          11.75,
+          16.4,
+          0
+        ],
+        [
+          11.75,
+          17.0,
+          0
+        ],
+        [
+          11.75,
+          19.0,
+          0
+        ]
+      ],
+      "surface": "blocked street-edge paving",
+      "note": "ends at visible construction barrier; no playable street beyond"
+    }
+  ],
+  "adjustments": [
+    {
+      "id": "A01",
+      "status": "no_playthrough_change",
+      "decision": "All 25 functional IDs and all 28 normal adjacencies from the Night 1 playthrough draft are retained.",
+      "reason": "The approved surface and hidden routes remain executable without adding a service stair, basement or second building."
+    },
+    {
+      "id": "A02",
+      "status": "metric_resolution",
+      "decision": "F1 is an L-shaped arrival hall; it shares its north edge with F2 and F8 and its west edge with the main stair.",
+      "reason": "This supplies the previously abstract F1-F2, F1-F8 and F1-S links as real shared-wall doors while preserving a modest villa entrance."
+    },
+    {
+      "id": "A03",
+      "status": "metric_resolution",
+      "decision": "The kitchen wing sits north-west of the living block and the narrow service wing sits east; O2 is north, O3 is its east-side alley, O4 is north-east, and O5 runs down the east service side.",
+      "reason": "The external return loop has real exterior gates and leaves O4 reachable from both directions. O4 contains the tree and drainage ditch required by N6."
+    },
+    {
+      "id": "A04",
+      "status": "metric_resolution",
+      "decision": "U6, U8 and U5 form one north-side chain above the rear half of the house. U8 is an open covered balcony. U3 is placed at the north-east end of U1.",
+      "reason": "The N5 safe bypass becomes physically legible, while U3, U6 and U8 each have a north-facing view toward O2 as required by the evidence route."
+    },
+    {
+      "id": "A05",
+      "status": "implementation_constraint",
+      "decision": "S is the only vertical connection. Its explicit `stair` geometry uses two 9-riser, 2.00 m runs, a 1.30 m turning landing, a 1.15 m clear stair width, and a defined U1 slab exclusion at z=3.60.",
+      "reason": "The stair now has dimensional flight, landing and floor-hole data rather than an unverified textual claim. No service stair or basement is introduced."
+    },
+    {
+      "id": "A06",
+      "status": "implementation_constraint",
+      "decision": "历史墙在S前室北侧y=4.40，0.95m宽2.15m高，避开梯段与平台。",
+      "reason": "Supports H3/H6 with adequate headroom and keeps Night 2 outside this production scope."
+    },
+    {
+      "id": "A07",
+      "status": "implementation_constraint",
+      "decision": "F2 has no exterior window because it is enclosed by the living loop. Daylight is supplied by a glazed transom above D09 (F1-F2); it is an interior borrowed-light element and is deliberately absent from `windows`.",
+      "reason": "Prevents a false exterior window in the surface-route room while retaining a plausible renovated-villa lighting condition."
+    }
+  ],
+  "boundary_openings": [
+    {
+      "id": "D00",
+      "a": "O1",
+      "b": "OUTSIDE",
+      "center": [
+        1.8,
+        -6,
+        0
+      ],
+      "width": 1.4,
+      "height": 2.1,
+      "axis": "X",
+      "kind": "front_yard_gate",
+      "gate": "true_dawn_exit"
+    }
+  ],
+  "internal_partitions": [
+    {
+      "room": "S",
+      "line": [
+        [
+          -4,
+          4.4
+        ],
+        [
+          0,
+          4.4
+        ]
+      ],
+      "thickness": 0.2,
+      "height": 3.2,
+      "note": "北端仅结构承托封闭余量，不增加新可探索房间；历史门在该墙指定0.95m段。"
+    }
+  ],
+  "sightlines": [
+    {
+      "id": "LIGHT-F2-F3",
+      "from": [
+        7.08,
+        3.62,
+        1.2
+      ],
+      "via": "D12",
+      "to": [
+        5.7,
+        7.8,
+        1.475
+      ],
+      "purpose": "遮光回放灯光必须通过真实门洞抵达窗线"
+    }
+  ]
+}
