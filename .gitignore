@@ -8,3 +8,6 @@ Thumbs.db
 # 临时文件
 *.tmp
 *~
+
+# WorkBuddy 发布元数据
+.wbapp_*.genie
