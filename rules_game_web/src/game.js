@@ -1,5 +1,6 @@
 // game.js —— 玩家控制、碰撞、交互与 N0–N1 剧情状态机
 import * as THREE from 'three';
+import { RGBELoader } from '../lib/RGBELoader.js';
 import { buildLevel, bp, pointInPoly } from './level.js';
 
 // ---------- 载入数据（源文件带 BOM，需剥离） ----------
@@ -23,6 +24,17 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 0.12, 300);
 
 const level = buildLevel(scene, geo, plac);
+
+// ---------- HDRI 环境光（Poly Haven · Kloofendal 48d Pure Sky, CC0） ----------
+// 仅作为 IBL 光照（scene.environment），不替换天空背景；昼夜切换时调 environmentIntensity。
+const ENV_DAY = 0.5, ENV_NIGHT = 0.1;
+scene.environmentIntensity = ENV_DAY;
+new RGBELoader().load('../assets/hdri/kloofendal_48d_partly_cloudy_puresky_2k.hdr', tex => {
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromEquirectangular(tex).texture;
+  tex.dispose();
+  pmrem.dispose();
+});
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
@@ -690,6 +702,7 @@ addInt(0.3, 2.1, 4.3, '朝短廊深处观察', () => S.phase === 'N4c', () => {
 function setFloor(n) { S.floor = Math.max(S.floor, n); S.pollution = Math.max(S.pollution, n); renderHUD(); }
 function setPublicLights(on) {
   for (const id in level.lampRefs) level.lampRefs[id].intensity = on ? 9 : 0.8;
+  scene.environmentIntensity = on ? ENV_DAY : ENV_NIGHT;   // HDRI 环境光随昼夜切换
 }
 function startN2() {
   setPhase('N2');

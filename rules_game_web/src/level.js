@@ -58,19 +58,49 @@ function centroid(poly) {
 }
 
 // ---------- 材质 ----------
+// PBR 贴图来自 Poly Haven（CC0），1k jpg：diff(反照率) / nor_gl(法线) / arm(AO+粗糙+金属打包)。
+// UV 采用世界坐标平铺：地板 ShapeGeometry 的 uv 即 (x,y)，除以 TILE 即得连续拼贴；
+// 墙体 BoxGeometry uv 为 0-1，在 addBox 里按实际长高缩放。
+const TILE = 3;   // 每张贴图覆盖 3 米
+const tl = new THREE.TextureLoader();
+const loadMap = (path, srgb = false) => {
+  const t = tl.load(`../assets/tex/${path}`);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+};
+const pbr = name => ({
+  map: loadMap(`${name}/diff.jpg`, true),
+  normalMap: loadMap(`${name}/nor_gl.jpg`),
+  roughnessMap: loadMap(`${name}/arm.jpg`),
+  roughness: 1.0,
+});
 const M = {
-  wall:   new THREE.MeshLambertMaterial({ color: 0xb9b2a4 }),
-  wallIn: new THREE.MeshLambertMaterial({ color: 0xcdc6b6 }),
+  wall:   new THREE.MeshStandardMaterial({ color: 0xcfc9bd, ...pbr('painted_worn_brick') }),
+  wallIn: new THREE.MeshStandardMaterial({ color: 0xffffff, ...pbr('damaged_plaster') }),
   fence:  new THREE.MeshLambertMaterial({ color: 0x6e685c }),
-  floor:  new THREE.MeshLambertMaterial({ color: 0x8b7a5e }),
-  floorIn:new THREE.MeshLambertMaterial({ color: 0xa08b6a }),
+  floor:  new THREE.MeshStandardMaterial({ color: 0xffffff, ...pbr('old_wood_floor') }),   // 二层：旧木地板
+  floorIn:new THREE.MeshStandardMaterial({ color: 0xffffff, ...pbr('herringbone_parquet') }), // 一层：人字拼
+  ground: new THREE.MeshStandardMaterial({ color: 0xffffff, ...pbr('brick_pavement') }),   // 院巷：砖铺地
   ceil:   new THREE.MeshLambertMaterial({ color: 0xb5ad9c, side: THREE.DoubleSide }),
   glass:  new THREE.MeshLambertMaterial({ color: 0x8899aa, transparent: true, opacity: 0.28 }),
-  wood:   new THREE.MeshLambertMaterial({ color: 0x7c5f3f }),
+  wood:   new THREE.MeshStandardMaterial({ color: 0xd9cdbb, ...pbr('old_wood_floor') }),
   fabric: new THREE.MeshLambertMaterial({ color: 0x5d5a52 }),
   metal:  new THREE.MeshLambertMaterial({ color: 0x8f959a }),
   plant:  new THREE.MeshLambertMaterial({ color: 0x4a5d3a }),
   dark:   new THREE.MeshLambertMaterial({ color: 0x3a3833 }),
+};
+// 世界坐标 UV 缩放（ShapeGeometry：uv = 顶点坐标）
+const worldUVs = geo => {
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / TILE, uv.getY(i) / TILE);
+  uv.needsUpdate = true;
+};
+// BoxGeometry uv 缩放（u 沿长度、v 沿高度）
+const boxUVs = (geo, len, h) => {
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * len / TILE, uv.getY(i) * h / TILE);
+  uv.needsUpdate = true;
 };
 function propMat(kit) {
   const k = kit.toLowerCase();
@@ -104,6 +134,7 @@ export function buildLevel(scene, g, p) {
   for (const r of g.rooms) {
     const shape = shapeOf(r.polygon);
     const geo = new THREE.ShapeGeometry(shape);
+    worldUVs(geo);
     if (isIndoor(r)) {
       const f = new THREE.Mesh(geo, r.floor === 1 ? M.floorIn : M.floor);
       f.rotation.x = -Math.PI / 2;
@@ -121,7 +152,7 @@ export function buildLevel(scene, g, p) {
       scene.add(li);
       lampRefs[r.id] = li;
     } else {
-      const f = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ color: 0x54584a }));
+      const f = new THREE.Mesh(geo, M.ground);
       f.rotation.x = -Math.PI / 2;
       f.position.y = r.z || 0;
       scene.add(f);
@@ -190,7 +221,9 @@ export function buildLevel(scene, g, p) {
     const addBox = (t0, t1, bz, bt, collide) => {
       if (t1 - t0 < 0.01 || bt - bz < 0.01) return;
       const L = t1 - t0;
-      const mesh = new THREE.Mesh(new THREE.BoxGeometry(L, bt - bz, thick), mat);
+      const bgeo = new THREE.BoxGeometry(L, bt - bz, thick);
+      boxUVs(bgeo, L, bt - bz);
+      const mesh = new THREE.Mesh(bgeo, mat);
       const midX = edge.a[0] + dx * (t0 + t1) / 2, midY = edge.a[1] + dy * (t0 + t1) / 2;
       mesh.position.set(midX, (bz + bt) / 2, -midY);
       mesh.rotation.y = yaw;
