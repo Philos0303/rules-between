@@ -245,6 +245,7 @@ const S = {
 };
 let gameStarted = false;
 let modalOpen = false;
+let deathSeq = 0;   // 死亡/黑幕时序令牌：递增作废旧回调
 let currentRoom = null;
 let objective = '';
 
@@ -1239,10 +1240,12 @@ function die(code) {
     X3: '电话已经停了，你追的是另一处重复的声音。',
     X4: TXT.x4hint,
   };
+  const token = ++deathSeq;   // 防止连续触发/与剧情淡入竞争导致黑幕卡死
   if (document.pointerLockElement) document.exitPointerLock();
   ui.fade.style.transition = 'opacity .8s';
   ui.fade.style.opacity = 1;
   after(1.0, () => {
+    if (token !== deathSeq) return;
     modalOpen = true;
     ui.fade.style.opacity = 0;
     $('death-hint').textContent = HINTS[code] + '　——回到最近稳定点。';
@@ -1251,15 +1254,17 @@ function die(code) {
       $('death').style.display = 'none';
       modalOpen = false;
       ui.fade.style.transition = 'opacity 1.8s';
+      ui.fade.style.opacity = 0;
       restoreSnapshot(lastSave);
     };
     $('death').onclick = restore;
-    after(4.5, () => { if ($('death').style.display === 'flex') restore(); });
+    after(4.5, () => { if (token === deathSeq && $('death').style.display === 'flex') restore(); });
   });
 }
 function restoreSnapshot(snap) {
   if (!snap) { location.reload(); return; }
   timers.length = 0;
+  deathSeq++;   // 作废所有待触发的死亡/剧情淡入回调，防黑幕竞争
   Object.assign(S, snap.S, { notes: snap.S.notes });
   objective = snap.objective || objective;
   player.x = snap.player.x; player.y = snap.player.y; player.z = snap.player.z;
@@ -1267,6 +1272,9 @@ function restoreSnapshot(snap) {
   S.pollution = Math.max(S.floor, Math.min(S.pollution, S.floor + 8));
   applyVisualState();
   currentRoom = null;
+  // 黑幕强制恢复透明：任何过场/死亡时序竞争都不能把玩家困在黑屏里
+  ui.fade.style.transition = 'opacity .6s ease';
+  ui.fade.style.opacity = 0;
   renderHUD();
   setObjective('（已回到稳定点）' + objective);
 }
@@ -1536,5 +1544,22 @@ function beginGame() {
     if (saved && saved.S && saved.S.phase !== 'boot') restoreSnapshot(saved);
     else { setPhase('boot'); setObjective('A01 · 查看手机订单。'); saveC('start'); }
   });
+  // #debug 钩子：自动开始（无指针锁定），供无头测试与截图
+  if (location.hash.includes('debug')) {
+    setTimeout(() => {
+      beginGame();
+      if (location.hash.includes('save')) {
+        // 模拟一份中途存档（N1e：F1 正门等待查看门缝）
+        restoreSnapshot({
+          S: { phase: 'N1e', pollution: 35, floor: 30, notes: [], doorLocked: {} },
+          player: { x: 1.8, y: -1.0, z: 0 },
+          objective: '测试存档恢复',
+        });
+      } else {
+        setPhase('boot');
+        setObjective('A01 · 查看手机订单。');
+      }
+    }, 300);
+  }
 }
 tick();
