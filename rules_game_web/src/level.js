@@ -337,6 +337,7 @@ export function buildLevel(scene, g, p) {
   // （S 顶 U1 相接处由楼梯坡度解决）
 
   // ---------- 家具 ----------
+  const propPh = [];   // 占位网格（GLB 模型加载成功后替换）
   const kitMesh = (kit, pr) => {
     const [w, d, h] = pr.size;
     const mat = propMat(kit);
@@ -377,6 +378,7 @@ export function buildLevel(scene, g, p) {
       const mesh = kitMesh(pr.kit, pr);
       const grp = new THREE.Group();
       grp.add(mesh);
+      propPh.push({ kit: pr.kit, grp, pr });
       grp.position.set(pr.position[0], pr.position[2], -pr.position[1]);
       grp.rotation.y = THREE.MathUtils.degToRad(pr.rotation_z_degrees || 0);
       scene.add(grp);
@@ -395,6 +397,97 @@ export function buildLevel(scene, g, p) {
       if (pr.kit === 'cup_on_mat' || /cup/.test(pr.kit)) dynamic.cup = grp;
     }
   }
+
+  // ---------- Kenney 家具 GLB（CC0，加载后替换占位盒） ----------
+  const PROP_GLB = {
+    bed_double: ['bedDouble.glb'],
+    bed_single: ['bedSingle.glb'],
+    chair: ['chair.glb', 'chairRounded.glb'],
+    coffee_table: ['tableCoffee.glb'],
+    dining_set: ['tableCloth.glb'],
+    door_mat: ['rugDoormat.glb'],
+    drawer_bench: ['cabinetBedDrawerTable.glb'],
+    dressing_table: ['desk.glb'],
+    duty_desk: ['desk.glb'],
+    entry_console: ['sideTable.glb'],
+    fold_table: ['table.glb'],
+    folded_cot: ['bench.glb'],
+    linen_rack: ['bookcaseOpen.glb'],
+    luggage_bench: ['bench.glb'],
+    nightstand: ['sideTableDrawers.glb'],
+    outdoor_bench: ['bench.glb'],
+    pantry_shelf: ['bookcaseClosedWide.glb'],
+    phone_table: ['sideTable.glb'],
+    planter_long: ['pottedPlant.glb'],
+    prep_unit: ['kitchenCabinet.glb'],
+    shower_zone: ['shower.glb'],
+    sideboard: ['cabinetTelevision.glb'],
+    small_planter: ['plantSmall1.glb', 'plantSmall2.glb', 'plantSmall3.glb'],
+    small_sink: ['bathroomSink.glb'],
+    sofa: ['loungeSofa.glb'],
+    toilet: ['toilet.glb'],
+    travel_bag: ['cardboardBoxClosed.glb'],
+    utility_shelf: ['bookcaseOpen.glb'],
+    wardrobe: ['bookcaseClosedDoors.glb'],
+    washer: ['washer.glb'],
+    writing_desk: ['desk.glb'],
+    kitchen_run: ['kitchenCabinet.glb'],
+  };
+  const installPropModels = () => {
+    if (typeof window === 'undefined') return;   // 无头测试环境跳过
+    (async () => {
+      let GLTFLoader;
+      try { ({ GLTFLoader } = await import('../lib/GLTFLoader.js')); } catch { return; }
+      const loader = new GLTFLoader();
+      // 去饱和做旧：把 Kenney 明快的命名材质统一映射为符合 1937 旧宅的暗色 PBR
+      const MATS = {
+        wood:        new THREE.MeshStandardMaterial({ color: 0x5f4630, roughness: 0.88, metalness: 0.05 }),
+        carpet:      new THREE.MeshStandardMaterial({ color: 0x77725f, roughness: 1 }),
+        carpetWhite: new THREE.MeshStandardMaterial({ color: 0x8d887c, roughness: 1 }),
+        metal:       new THREE.MeshStandardMaterial({ color: 0x6a6e73, roughness: 0.55, metalness: 0.35 }),
+        metalDark:   new THREE.MeshStandardMaterial({ color: 0x42454a, roughness: 0.6, metalness: 0.3 }),
+        metalLight:  new THREE.MeshStandardMaterial({ color: 0x767a80, roughness: 0.5, metalness: 0.4 }),
+        _defaultMat: new THREE.MeshStandardMaterial({ color: 0x8b857a, roughness: 0.95 }),
+      };
+      const applyMats = root => root.traverse(o => {
+        if (!o.isMesh) return;
+        o.castShadow = true;
+        o.receiveShadow = true;
+        const n = o.material && o.material.name;
+        if (n && MATS[n]) o.material = MATS[n];
+      });
+      const kitFiles = propPh.map(ph => {
+        const arr = PROP_GLB[ph.kit];
+        return arr ? arr[Math.floor(Math.random() * arr.length)] : null;
+      });
+      const files = [...new Set(kitFiles.filter(Boolean))];
+      const cache = {};
+      await Promise.all(files.map(file => new Promise(res => {
+        loader.load(`../assets/models/${file}`, g => { cache[file] = g.scene; res(); }, undefined, () => res());
+      })));
+      propPh.forEach((ph, i) => {
+        const file = kitFiles[i];
+        if (!file || !cache[file]) return;   // 加载失败 → 保留占位盒
+        const inst = cache[file].clone(true);
+        applyMats(inst);
+        // 按 Footprint 均匀缩放，底面中心对齐原点（占位组自带位置/朝向）
+        inst.updateMatrixWorld(true);
+        const box = new THREE.Box3().setFromObject(inst);
+        const bx = box.max.x - box.min.x, bz = box.max.z - box.min.z, bh = box.max.y - box.min.y;
+        if (bx < 1e-4 || bz < 1e-4) return;
+        const [w, d, h] = ph.pr.size;
+        let k = Math.min(w / bx, d / bz);
+        if (bh * k > h * 1.35) k = (h * 1.35) / bh;   // 高度超限则收敛（保留 35% 余量给灯罩/床沿）
+        inst.scale.setScalar(k);
+        inst.updateMatrixWorld(true);
+        const b2 = new THREE.Box3().setFromObject(inst);
+        inst.position.set(-(b2.min.x + b2.max.x) / 2, -b2.min.y, -(b2.min.z + b2.max.z) / 2);
+        ph.grp.clear();
+        ph.grp.add(inst);
+      });
+    })();
+  };
+  installPropModels();
 
   // ---------- 外部环境 ----------
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 240),
