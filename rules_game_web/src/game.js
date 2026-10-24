@@ -1,6 +1,13 @@
 // game.js —— 玩家控制、碰撞、交互与 N0–N1 剧情状态机
 import * as THREE from 'three';
 import { RGBELoader } from '../lib/RGBELoader.js';
+import { EffectComposer } from '../lib/postprocessing/EffectComposer.js';
+import { RenderPass } from '../lib/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from '../lib/postprocessing/UnrealBloomPass.js';
+import { FilmPass } from '../lib/postprocessing/FilmPass.js';
+import { ShaderPass } from '../lib/postprocessing/ShaderPass.js';
+import { OutputPass } from '../lib/postprocessing/OutputPass.js';
+import { VignetteShader } from '../lib/shaders/VignetteShader.js';
 import { buildLevel, bp, pointInPoly } from './level.js';
 
 // ---------- 载入数据（源文件带 BOM，需剥离） ----------
@@ -18,6 +25,8 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
@@ -36,10 +45,39 @@ new RGBELoader().load('../assets/hdri/kloofendal_48d_partly_cloudy_puresky_2k.hd
   pmrem.dispose();
 });
 
+// ---------- 阴影 ----------
+// 全场景网格投影/受影；玻璃除外。灯的阴影按「离玩家最近的一盏」动态开关，控制性能。
+scene.traverse(o => {
+  if (o.isMesh) {
+    o.castShadow = !(o.material && o.material.transparent);
+    o.receiveShadow = true;
+  }
+});
+for (const id in level.lampRefs) {
+  const li = level.lampRefs[id];
+  li.shadow.mapSize.set(512, 512);
+  li.shadow.bias = -0.008;
+  li.shadow.camera.near = 0.15;
+  li.shadow.camera.far = 9;
+}
+let shadowLampId = null;
+
+// ---------- 后处理链：RenderPass → Bloom → 胶片颗粒 → 暗角 → 输出 ----------
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.32, 0.65, 0.82));
+composer.addPass(new FilmPass(0.16, false));
+const vignette = new ShaderPass(VignetteShader);
+vignette.uniforms.offset.value = 1.12;
+vignette.uniforms.darkness.value = 1.4;
+composer.addPass(vignette);
+composer.addPass(new OutputPass());
+
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
 });
 
 // ---------- UI 引用 ----------
@@ -332,6 +370,11 @@ function M_dark() { return new THREE.MeshLambertMaterial({ color: 0x3a3833 }); }
 const phoneLight = new THREE.PointLight(0xcfd8ff, 0, 5, 2);
 phoneLight.position.set(0.15, -0.12, -0.3);
 camera.add(phoneLight);
+phoneLight.castShadow = true;               // 手机照明也投影
+phoneLight.shadow.mapSize.set(512, 512);
+phoneLight.shadow.bias = -0.006;
+phoneLight.shadow.camera.near = 0.1;
+phoneLight.shadow.camera.far = 5;
 scene.add(camera);
 
 // ---------- 剧情文本 ----------
@@ -1354,7 +1397,19 @@ function tick() {
     }
   }
 
-  renderer.render(scene, camera);
+  // 最近的一盏灯开阴影，其余关闭（立方体贴图阴影开销大，只保玩家身边那盏）
+  let bestId = null, bestD = Infinity;
+  for (const id in level.lampRefs) {
+    const li = level.lampRefs[id];
+    const d = (li.position.x - player.x) ** 2 + (li.position.z + player.y) ** 2;
+    if (d < bestD) { bestD = d; bestId = id; }
+  }
+  if (bestId !== shadowLampId) {
+    if (shadowLampId) level.lampRefs[shadowLampId].castShadow = false;
+    if (bestId) level.lampRefs[bestId].castShadow = true;
+    shadowLampId = bestId;
+  }
+  composer.render();
 }
 let hudTick = 0;
 function renderHUDLight() {
