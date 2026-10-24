@@ -88,6 +88,7 @@ const ui = {
   noteTitle: $('note-title'), noteBody: $('note-body'), noteChoices: $('note-choices'),
   noteClose: $('note-close'), notes: $('notes'), notesList: $('notes-list'),
   fade: $('fade'), end: $('end'), endText: $('end-text'),
+  target: $('target'), minimap: $('minimap'),
 };
 
 // ---------- 音效（WebAudio 合成敲门声） ----------
@@ -126,6 +127,7 @@ const keys = {};
 addEventListener('keydown', e => {
   keys[e.code] = true;
   if (e.code === 'Tab') { e.preventDefault(); toggleNotes(); }
+  if (e.code === 'KeyM' && gameStarted && !modalOpen) toggleMap();
   if (e.code === 'KeyE') onE();
   if (/^Digit[1-3]$/.test(e.code)) clickChoice(+e.code.slice(5) - 1);
 });
@@ -261,6 +263,124 @@ function roomName(id) {
   if (!id) return '';
   const r = level.rooms[id];
   return r ? r.name || id : id;
+}
+
+// ---------- 导航：目标方位 + 平面图 ----------
+let mapOpen = false;
+const roomCentroid = {};   // id -> [cx, cy]
+for (const id in level.rooms) {
+  const poly = level.rooms[id].polygon;
+  let cx = 0, cy = 0;
+  for (const pt of poly) { cx += pt[0]; cy += pt[1]; }
+  roomCentroid[id] = [cx / poly.length, cy / poly.length];
+}
+const floorGroupOf = id => {
+  const r = level.rooms[id];
+  if (!r) return 'ground';
+  return (id[0] === 'U') ? 'up' : 'ground';   // F/O/S/O 均在一层平面
+};
+let mapGroup = 'ground';
+
+function objectiveTargetRooms() {
+  const out = [];
+  const re = /\b(F\d{1,2}|U\d{1,2}|O\d{1,2})\b/g;
+  let m;
+  while ((m = re.exec(objective))) {
+    const id = m[1];
+    if (level.rooms[id] && !out.includes(id)) out.push(id);
+  }
+  return out;
+}
+
+function updateTargetHUD() {
+  if (!gameStarted || modalOpen) { ui.target.style.display = 'none'; return; }
+  const targets = objectiveTargetRooms();
+  if (!targets.length) { ui.target.style.display = 'none'; return; }
+  ui.target.style.display = 'flex';
+  // 离玩家最近的为目标点
+  let best = null, bestD = 1e9;
+  for (const id of targets) {
+    const [cx, cy] = roomCentroid[id];
+    const d = Math.hypot(cx - player.x, cy - player.y);
+    if (d < bestD) { bestD = d; best = id; }
+  }
+  const [cx, cy] = roomCentroid[best];
+  const dx = cx - player.x, dy = cy - player.y;
+  const fx = Math.sin(player.yaw), fy = -Math.cos(player.yaw);
+  const tx = dx / (bestD || 1), ty = dy / (bestD || 1);
+  const ang = Math.atan2(fx * ty - fy * tx, fx * tx + fy * ty) * 180 / Math.PI;
+  const myGroup = floorGroupOf(currentRoom);
+  const tGroup = floorGroupOf(best);
+  const sameGroup = myGroup === tGroup;
+  const vert = !sameGroup ? (tGroup === 'up' ? '（在楼上）' : '（在一楼）')
+    : (best === currentRoom ? '（已在此处）' : '');
+  ui.target.innerHTML =
+    `<span class="arr" style="transform:rotate(${ang.toFixed(0)}deg)">➤</span>` +
+    `${roomName(best)} <span class="dist">${best === currentRoom && sameGroup ? '' : Math.round(bestD) + 'm'} ${vert}</span>`;
+}
+
+function toggleMap() {
+  mapOpen = !mapOpen;
+  ui.minimap.style.display = mapOpen ? 'block' : 'none';
+  if (mapOpen) {
+    mapGroup = floorGroupOf(currentRoom);
+    drawMinimap();
+  }
+}
+
+function drawMinimap() {
+  const cv = ui.minimap, ctx = cv.getContext('2d');
+  const W = cv.width / 2, H = cv.height / 2;   // 720 backing → 360 css
+  ctx.setTransform(2, 0, 0, 2, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  const ids = Object.keys(level.rooms).filter(id => floorGroupOf(id) === mapGroup);
+  let minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
+  for (const id of ids) for (const [x, y] of level.rooms[id].polygon) {
+    minx = Math.min(minx, x); maxx = Math.max(maxx, x);
+    miny = Math.min(miny, y); maxy = Math.max(maxy, y);
+  }
+  const pad = 22;
+  const s = Math.min((W - pad * 2) / (maxx - minx), (H - pad * 2) / (maxy - miny));
+  const ox = (W - (maxx - minx) * s) / 2, oy = (H - (maxy - miny) * s) / 2;
+  const mx = x => (x - minx) * s + ox, my = y => H - ((y - miny) * s + oy);
+  const targets = objectiveTargetRooms();
+
+  ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  for (const id of ids) {
+    const poly = level.rooms[id].polygon;
+    ctx.beginPath();
+    poly.forEach(([x, y], i) => i ? ctx.lineTo(mx(x), my(y)) : ctx.moveTo(mx(x), my(y)));
+    ctx.closePath();
+    const isCur = id === currentRoom, isTgt = targets.includes(id);
+    ctx.fillStyle = isTgt ? 'rgba(184,154,94,.28)' : isCur ? 'rgba(120,110,80,.30)' : 'rgba(46,45,40,.85)';
+    ctx.fill();
+    ctx.strokeStyle = isTgt ? '#c8a75e' : '#5a5546';
+    ctx.lineWidth = isTgt ? 1.6 : 1;
+    ctx.stroke();
+    const [cx, cy] = roomCentroid[id];
+    ctx.fillStyle = isTgt ? '#e0c88f' : isCur ? '#cfc9ba' : '#847e6d';
+    ctx.fillText(id, mx(cx), my(cy) + 3);
+  }
+  // 玩家（朝向楔形）
+  const px = mx(player.x), py = my(player.y);
+  const fx = Math.sin(player.yaw), fy = -Math.cos(player.yaw);
+  ctx.save();
+  ctx.translate(px, py);
+  ctx.rotate(Math.atan2(fx, fy));
+  ctx.beginPath();
+  ctx.moveTo(0, -8); ctx.lineTo(5, 6); ctx.lineTo(-5, 6);
+  ctx.closePath();
+  ctx.fillStyle = '#e8e2d2';
+  ctx.fill();
+  ctx.restore();
+  // 标题
+  ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#b8b2a2';
+  ctx.fillText(mapGroup === 'up' ? '二楼' : '一楼 · 院巷', 12, 18);
+  if (targets.some(id => floorGroupOf(id) !== mapGroup)) {
+    ctx.fillStyle = '#c8a75e';
+    ctx.fillText(targets.some(id => floorGroupOf(id) === 'up') ? '目标在楼上' : '目标在一楼', 12, H - 12);
+  }
 }
 function addNote(title, body) {
   S.notes.push({ title, body, clock: S.clock });
@@ -1387,6 +1507,12 @@ function tick() {
     pendingInt = nearestInt();
     ui.prompt.innerHTML = pendingInt ? `<b>E</b>${pendingInt.label}` : '';
     renderHUDLight();
+    updateTargetHUD();
+    if (mapOpen) {
+      const g = floorGroupOf(currentRoom);
+      if (g !== mapGroup) mapGroup = g;
+      drawMinimap();
+    }
 
     // N5 危险区：短廊 G 段（未解决时深入 U1 东段）
     if (S.phase === 'N5' && !S.loopResolved && currentRoom === 'U1' && player.x > 2.5) {
@@ -1559,6 +1685,7 @@ function beginGame() {
         setPhase('boot');
         setObjective('A01 · 查看手机订单。');
       }
+      if (location.hash.includes('map')) { setPhase('N2'); setObjective('熟悉一楼：餐厅 F3 · 厨房 F5 热水说明 · 书房 F4 · 服务廊 F8。'); toggleMap(); }
     }, 300);
   }
 }

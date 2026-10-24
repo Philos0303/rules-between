@@ -29,6 +29,13 @@
   #objective { position:absolute; top:86px; left:26px; max-width:380px; font-size:14px;
     color:#cfc9ba; line-height:1.7; text-shadow:0 1px 4px #000; }
   #objective::before { content:"◈ "; color:#b89a5e; }
+  #target { position:absolute; top:118px; left:26px; font-size:13px; color:#d8c491;
+    letter-spacing:1px; text-shadow:0 1px 4px #000; display:flex; align-items:center; gap:7px; }
+  #target .arr { display:inline-block; width:16px; height:16px; will-change:transform; }
+  #target .dist { color:#9a917d; font-size:12px; }
+  #minimap { position:fixed; right:26px; top:64px; z-index:12; width:360px; height:360px;
+    border:1px solid #4a463a; border-radius:3px; background:rgba(8,9,11,.9);
+    box-shadow:0 10px 40px rgba(0,0,0,.6); display:none; pointer-events:none; }
   #pollution { position:absolute; top:22px; right:26px; font-size:12px; color:#8a8577;
     letter-spacing:2px; text-shadow:0 1px 4px #000; }
   #crosshair { position:absolute; left:50%; top:50%; width:6px; height:6px; margin:-3px;
@@ -120,10 +127,11 @@
 <div id="hud">
   <div id="clock">17:40<small>黄昏 · 十月二十一日</small></div>
   <div id="objective"></div>
+  <div id="target"></div>
   <div id="pollution">污染 0</div>
   <div id="crosshair"></div>
   <div id="prompt"></div>
-  <div id="hint">Tab 笔记 · Esc 释放鼠标</div>
+  <div id="hint">Tab 笔记 · M 平面图 · Esc 释放鼠标</div>
 </div>
 
 <div id="note"><div class="paper">
@@ -139,6 +147,7 @@
   <div class="tip">Tab · 收起</div>
 </div></div>
 
+<canvas id="minimap" width="720" height="720"></canvas>
 <div id="fade"></div>
 
 <div id="death"><h2>你失去了返回的位置</h2><p id="death-hint"></p></div>
